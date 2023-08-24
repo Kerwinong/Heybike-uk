@@ -21,14 +21,19 @@
       {% when 5 %}
           {% assign switchW = 'w-56' %}
     {% endcase %}
-
+<style>
+.active {
+  -webkit-tap-highlight-color: transparent; /* Safari/Chrome 浏览器 */
+  tap-highlight-color: transparent; /* 其他浏览器 */
+}
+</style>
 
     <div class="rounded-full bg-white py-2 md:px-4 px-2 {{ switchW }} mx-auto shadow-sm">
       <div tag-name="color-carousel" data-flickity='{"draggable": false, "asNavFor": "#carousel-main-{{section.id}}", "contain": true, "pageDots": false, "prevNextButtons": false}'>
         {% for block in section.blocks %}
         <div class="md:px-1 px-2">
-          <div tag-name="color-block" class="p-[2px] border-solid border-2 border-black-300 rounded-full transition-all duration-500">
-            <div class="cursor-pointer rounded-full w-7 h-7 shadow-inner transition-all duration-500" style="background-color:{{block.settings.color}}" ></div>
+          <div tag-name="color-block" class="active p-[2px] border-solid border-2 border-black-300 rounded-full transition-all duration-500">
+            <div class="active cursor-pointer rounded-full w-7 h-7 shadow-inner transition-all duration-500" style="background-color:{{block.settings.color}}" ></div>
           </div>
         </div>
         {% endfor %}

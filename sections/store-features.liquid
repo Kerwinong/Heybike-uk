@@ -1,0 +1,393 @@
+{%- assign secSt = section.settings -%}
+{% if secSt.section_style == 'heybike' %} {% assign hbStyle = true %} {% else %} {% assign hbStyle = false %} {% endif %}
+
+{%- capture storeFeatures -%}
+  <div section-name="store-features" class="content-indent {{ secSt.top-offeset}}{% if secSt.hide_mobile %} hide-sm{% endif %}">  
+    {% if secSt.section_cov %} <div class="section-cover {% render 'section-interva-set' , secSt:secSt %}"
+     style="background-color:{{secSt.sec_bg_clr}};"> {% endif%}
+      <div class="{% unless section.settings.section_width %}page-width{% else %}fullwidth{% endunless %} wow fadeIn">          
+      
+      <section {% if hbStyle %}tag-name="features-header"{% endif %} class="{% if hbStyle %}md:mb-20 mb-4 {% endif %}">
+        {% render 'sec-title' %}
+      </section>
+
+
+        <ul {% if hbStyle %}tag-name="features-ul" {% endif %}class="md:bg-transparent rounded-4xl md:py-0 py-8 bg-black-800 store-info fl f-jcsb sec{{section.id}} {{ secSt.style}}"
+            data-flickity='{"pageDots": true, "prevNextButtons": false, "wrapAround":true, "watchCSS":true }' flickity-screen='mobile'
+            style="--cl:{{secSt.cl}};--tcl:{{secSt.tcl}};--tfs:{{secSt.tfs}}px;--tsm:{{secSt.tfsm | divided_by: 100.0 }}rem;--tff:var(--ft1);--tfw:{{secSt.tfw}};--lh:{{secSt.tlh}};
+                    --icl:{{secSt.icons_clr}};--isz:{{secSt.isz}}px;--bd:{{secSt.border_sep}}">
+            {% for block in section.blocks limit: section.blocks.size %}
+            {%- assign blkSt = block.settings -%}
+            <li class="fl1 item" {{ block.shopify_attributes }}>
+                <{% if blkSt.texturl != blank %}a href="{{blkSt.texturl}}"{% else %}div{% endif %} class="{% if secSt.style == 'style2' %} flex{% if blkSt.text == blank%} f-aic{% endif %}{% else %}tc{% endif %}">
+                  {% if secSt.icon-type == 'image' and blkSt.image != blank %}
+                      <img class="at md:mb-5 mb-2 lazyload" data-src="{{blkSt.image | img_url: '200x' }}" width="{{secSt.isz}}px" height="{{secSt.isz}}px" alt="{{blkSt.image.alt | escap }}" />
+                  {% elsif blkSt.icons != blank %}
+                      <span class="bg-black-700 md:py-5 md:px-4 p-3 md:mb-10 mb-6 rounded-full md:inline-block flex justify-center items-center mx-auto w-24 h-24 ">
+                        <i class="at {{ blkSt.icons }} !mb-0 !flex justify-center md:text-base !text-5xl !w-full" aria-hidden="true"></i>
+                      </span>
+                  {% endif %}
+                <div class="text fl1"> 
+                    {% if blkSt.title %}<h5 class="ttlTxt md:mb-4 mb-2 md:text-2xl text-xl">{{ blkSt.title }}</h5>{% endif %}
+                    {% if blkSt.text %}<div class="sub-text{% if hbStyle %} md:text-lg text-base md:px-8 px-2{% endif %}">{{ blkSt.text }}</div>{% endif %}
+                </div>
+              </{% if blkSt.texturl != blank %}a{% else %}div{% endif %}>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if section.blocks.size == 0 %}
+        {% include 'no-blocks' %}
+        {% endif %} 
+    </div>
+    {% if secSt.section_cov %} </div> {% endif%}
+  </div>
+{%- endcapture -%}
+{{storeFeatures | strip_newlines | remove: "  " | remove: "	" }}
+
+
+
+{% schema %}
+  {
+  "name": "Store Features",
+  "class": "index-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section interval set"
+    },
+    {
+      "type": "select",
+      "id": "top_padding",
+      "label": "top interval",
+      "default": "none",
+      "options": [
+        {
+          "value": "extraLarge",
+          "label": "Extra Large"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bottom_padding",
+      "label": "bottom interval",
+      "default": "large",
+      "options": [
+        {
+          "value": "extraLarge",
+          "label": "Extra Large"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "top-offeset",
+      "label": "Top OffSet",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "section_style",
+      "label": "Section Style",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "heybike",
+          "label": "Heybike"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "section_width",
+      "label": "Fullwidth?",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "section_cov",
+      "label": "Add Background?",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "sec_bg_clr",
+      "label": "Background",
+      "default": "#fafafa"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide Section in Mobile?",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub Heading"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Select Style",
+      "default": "style2",
+      "options": [
+        {
+          "value": "style1",
+          "label": "Style 1"
+        },
+        {
+          "value": "style2",
+          "label": "Style 2"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Icons ====="
+    },
+    {
+      "type": "select",
+      "id": "icon-type",
+      "label": "Icon Type",
+      "default": "icon",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "icon",
+          "label": "Font Icon"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "icons_clr",
+      "label": "Icon",
+      "default": "#333"
+    },
+    {
+      "type": "range",
+      "id": "isz",
+      "label": "Icon Size",
+      "default": 30,
+      "min": 30,
+      "max": 120,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "paragraph",
+      "content": "Heading ====="
+    },
+    {
+      "type": "color",
+      "id": "tcl",
+      "label": "Text",
+      "default": "#111"
+    },
+    {
+      "type": "range",
+      "id": "tfs",
+      "label": "Font Size",
+      "default": 14,
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "tfw",
+      "label": "Font Weight",
+      "default": "600",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "tlh",
+      "label": "Line Height",
+      "default": 1.2,
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "info": "Space between text lines. Default is set to 1.3"
+    },
+    {
+      "type": "color",
+      "id": "cl",
+      "label": "Text",
+      "default": "#333"
+    },
+    {
+      "type": "color",
+      "id": "border_sep",
+      "label": "Separation Border",
+      "default": "#eee"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "icons",
+          "label": "Icon class name",
+          "default": "at-truck-l",
+          "info": "[Find icons here](http://www.adornthemes.com/optimal-icons/)"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this text to display your store information</p>"
+        },
+        {
+          "type": "url",
+          "id": "texturl",
+          "label": "Url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Store Features",
+      "blocks": [
+        {
+          "type": "text_block",
+          "settings": {
+            "icons": "at-truck-l",
+            "title": "FREE SHIPPING",
+            "text": "<p>When you spend $100+</p>"
+          }
+        },
+        {
+          "type": "text_block",
+          "settings": {
+            "icons": "at-undo-r",
+            "title": "FREE RETURNS",
+            "text": "<p>30-days free return policy.</p>"
+          }
+        },
+        {
+          "type": "text_block",
+          "settings": {
+            "icons": "at-lock-al",
+            "title": "SECURED PAYMENTS",
+            "text": "<p>We accept all major credit cards.</p>"
+          }
+        },
+        {
+          "type": "text_block",
+          "settings": {
+            "icons": "at-chat",
+            "title": "24/7 HELP CENTER",
+            "text": "<p>Dedicated 24/7 support</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

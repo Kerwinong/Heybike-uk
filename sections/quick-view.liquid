@@ -1,0 +1,372 @@
+<style>
+    #content_quickview .sizelink { display:none; }
+    #content_quickview .psinglePriceWr { font-size:22px; }
+    #content_quickview s.pr_price { font-size:18px; }
+  #content_quickview .mfp-close{ top:10px; right:10px;}
+</style>
+{%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_img_src = current_variant.featured_image.src | default: product.featured_image.src
+-%}
+<div id="quickView" data-url="{{ product.url }}" data-section-id="quickView" data-section-type="quickView" data-enable-history-state="true">
+{% capture productImages %}
+	<div class="pr_lg_img" data-product-single-media-group style="--imgw:calc(100%);">
+		<div class="primgSlider p1 pisquickView" data-flickity='{"cellAlign":"left","wrapAround":true,"adaptiveHeight":false,"pageDots":false{%- if settings.rtl -%},"rightToLeft": true{%- endif -%} }'>
+		{% for media in product.media %}
+			{%- assign imgNo = forloop.index0 -%}
+			{% case media.media_type %}
+				{% when 'image' %}
+					<div id="{{media.id}}" data-src="{{ media | img_url: "100x" }}" class="pr_photo w_100 p1{% if featured_img_src == media %} activeSlide{% endif %}">
+						{%- assign primg_url = media | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+						<span class="imgWrapper" style="max-width:{% if settings.pimg_maxHt != blank %}{{ settings.pimg_maxHt | times: media.aspect_ratio }}{% else %}{{media.width}}{% endif %}px;">
+							<img class="imgFl lazyload featImgquickView product-featured-img{% if forloop.first %} lazypreload{% endif %}" src="{{ media | img_url: "100x" }}" width="100" height="100"
+								data-src="{{ primg_url }}" data-widths="[350, 500, 670, 800, 1000, 1300]" data-aspectratio="{{ media.aspect_ratio }}" data-sizes="auto" alt="{{ media.alt | escape }}">
+						</span>
+					</div>
+				{% when 'external_video' %}
+					<div class="pr_photo w_100 p1 videoSlide" data-media-id="{{ media.id }}" data-slide="{{imgNo}}">
+						<div class="vd-wrap">{{ media | external_video_tag }}</div>
+					</div>
+				{% when 'video' %}
+					<div class="pr_photo w_100 p1 videoSlide" data-media-id="{{ media.id }}" data-slide="{{imgNo}}">
+						{%- assign videoThumb = media | img_url: '700x' -%}
+						{{ media | video_tag: poster: videoThumb, controls: true, muted: true, loop: true, playsinline: true, webkit-playsinline: true }}
+					</div>
+				{% when 'model' %}
+					<div class="pr_photo w_100 p1 pmd" id="FeaturedMedia-quickView-{{ media.id }}-wrapper" data-product-media-type-model data-product-single-media-wrapper data-media-id="quickView-{{ media.id }}">
+						<div class="prMedia" style="padding-top:100%">{{ media | model_viewer_tag: image_size: pimgsize, reveal: 'interaction', toggleable: true, data-model-id: media.id }}</div>
+					</div>
+				{% else %}
+					<div class="pr_photo w_100 p1" style="padding-top: 100%;" data-media-id="{{ media.id }}">{{ media | media_tag }}</div>
+				{% endcase %}
+			{% endfor %}                                       
+		</div>
+
+                {% if settings.pr_lbl %}
+                <span class="product-labels {{ settings.select_label_style }}">
+                    {%- if settings.sale_lbl and product.compare_at_price > product.price -%}
+                        {% if settings.sale_label_style == "salelabel" %}
+                          <label class="lbl on-sale">{{ 'products.product.on_sale' | t}}</label>
+                        {% else %}
+                          <label class="lbl on-sale">-{{ product.compare_at_price_min | minus: product.price | times: 100 | divided_by: product.compare_at_price_min }}%</label>
+                        {% endif %}
+                    {%- endif -%}
+                    {%- if product.tags contains settings.pr_label1 -%}<label class="lbl pr-label1">{{settings.pr_label1}}</label>{%- endif -%}
+                    {%- if product.tags contains settings.pr_label2 -%}<label class="lbl pr-label2">{{settings.pr_label2}}</label>{%- endif -%}
+                    {%- if product.tags contains settings.pr_label3 -%}<label class="lbl pr-label3">{{settings.pr_label3}}</label>{%- endif -%}
+                </span>
+                {% endif %}
+	</div>
+    {%- if settings.qvfullbtn -%}
+                    <p class="tc">
+                        <a href="{{product.url}}" class="btn btn-sm view-full w_100">{{ 'products.quickview.Show_view_full_details_button' | t }} <i class="at at-long-arrow-right"></i></a>
+                    </p>
+                {%- endif -%}
+{% endcapture %}
+
+<div class="grid f-ais product-single">
+	<div class="gitem wd50-md mb20 mb0-md">{{productImages | strip_newlines | remove: "  " | remove: "	"}}</div>
+	<div class="gitem wd50-md pr">
+		<div class="wrap-product-info">
+            {%- if settings.qvvendor -%}
+                <p class="vendor mb0">
+                {%- liquid
+                    assign vlink = routes.collections_url | append: '/vendors?q=' | append: product.vendor
+                    for coll in product.collections
+                        if coll.title == product.vendor
+                            assign vlink = coll.url
+                            break
+                        endif
+                    endfor
+                -%}
+                <a class="product-vendor" href="{{vlink}}" style="color:{{blkSt.cl}};font-size:{{blkSt.fs}}px">{{product.vendor}}</a>
+            </p>
+            {%- endif -%}
+			
+            <h2 class="product-single__title ttlTxt tt-c mb10" style="--tfs:20px;--tfsm:16px;--tff:var(--ft2);--tfw:600;--tlh:1.2;">{{ product.title }}</h2>
+            <div class="product-info mb10">
+                {%- if settings.qvstock -%}
+                    <div class="product-stock">{{ 'products.product.availability' | t }}
+                        {%- liquid
+                            assign classNm = 'instock'
+                            assign stickLbl = 'products.product.available' | t
+                            if current_variant.inventory_management == "shopify"
+                                if current_variant.available and current_variant.inventory_quantity < 1
+                                    assign classNm = 'preorder'
+                                    assign stickLbl = 'products.product.pre_order' | t
+                                elsif current_variant.available
+                                    assign classNm = 'instock'
+                                    assign stickLbl = 'products.product.available' | t
+                                else
+                                    assign classNm = 'outstock'
+                                    assign stickLbl = 'products.product.unavailable' | t
+                                endif
+                            endif
+                        -%}
+                        <span class="stockLbl {{classNm}}" data-in="{{ 'products.product.available' | t }}" data-out="{{ 'products.product.unavailable' | t }}" data-pre="{{ 'products.product.pre_order' | t }}">{{stickLbl}}</span>
+                    </div>
+                {%- endif -%}
+                {%- if settings.qvsku and current_variant.sku != blank -%}<div class="product-sku">{{ 'products.product.sku' | t }} <span class="variant-sku">{{ current_variant.sku }}</span></div>{%- endif -%}
+            </div>
+            {%- if settings.show_product_review -%}
+                <div class="review mb10"><a class="reviewLink" href="#tab{{reviewtabId}}">{% render 'ratings': product:product %}</a></div>
+            {%- endif -%}
+
+			{%- unless settings.hide-price or linklists[product.handle].links.size > 0 -%}
+				<div id="pricequickView" class="fl f-wrap psinglePriceWr mb10" style="--fs:24px; --fsm:18px;--pfw:600;">
+					{%- liquid
+				        assign compareprice = current_variant.compare_at_price
+						assign price = current_variant.price
+						assign money_price = price | money
+						if settings.curCode
+							assign money_price = price | money_with_currency
+						endif
+					-%}
+                    <p class="psinglePriceWr mr15 mb0 fl f-aic">
+                        {%- if compareprice > price -%}
+                            <span class="v-hidden">{{ 'products.product.regular_price' | t }}</span>
+                            <span class="pr_price sale">{{ money_price }}</span>
+                            <s class="pr_price">{{ compareprice | money }}</s>
+                        {%- else -%}
+                            <span class="v-hidden">{{ 'products.product.regular_price' | t }}</span>
+                            <span class="pr_price">{{ money_price }}</span>
+                            <s class="pr_price hide">{{ compareprice | money }}</s>
+                        {%- endif -%}
+                    </p>
+                    <span class="price__unit{% unless current_variant.unit_price_measurement %} hide{% endunless %}">
+                        <br />
+                        <span data-unit-price>{{ current_variant.unit_price | money }}</span> /
+                        <span data-unit-base>
+                            {%- if current_variant.unit_price_measurement -%}
+                                {%- if current_variant.unit_price_measurement.reference_value != 1 -%}{{- current_variant.unit_price_measurement.reference_value -}}{%- endif -%}
+                                {{ current_variant.unit_price_measurement.reference_unit }}
+                            {%- endif -%}
+                        </span>
+                    </span>
+                </div>
+            {%- endunless -%}
+            {%- if settings.qvdesc -%}
+                <div class="pr_desc rte mb15">
+                    {% if product.metafields.my_fields.short_des != blank %}
+                        {{ product.metafields.my_fields.short_des }}
+                  {% else %}
+                      {{ product.description | strip_html | truncatewords: 30 }}
+                  {% endif %}
+                </div>
+            {%- endif -%}
+                {%- assign product_form_id = 'product-form-quickView' -%}
+                <product-form class="db mb15">
+                    {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                        <div class="product-form mfp-link fl f-aie f-wrap">
+                            {% assign isSwatch = false %}
+                            {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+                                {%- for option in product.options_with_values -%}
+                                    {%- if settings.show_swatch -%}
+                                        {% assign isSwatch = true %}
+                                        {% render 'swatch', swatch: option, secId: 'quickView', optindex: forloop.index0 %}
+                                    {%- else -%}
+                                        <div class="dd_wrap fl1 js pr_form_item mb5 option{{forloop.index}}">
+                                            <label {% if option.name == 'default' %}class="hidden_txt" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+                                                {{ option.name }} <span class="slVariant ml5"></span>
+                                            </label>
+                                            <select class="single-option-selector single-option-selector-quickView w_100" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+                                                {%- for value in option.values -%}<option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>{%- endfor -%}
+                                            </select>
+                                        </div>
+                                    {%- endif -%}
+                                {%- endfor -%}
+                            {%- endunless -%}
+
+                            <select name="id" id="ProductSelect-quickView" data-section="quickView" class="pr_variants no-js">
+                                {%- for variant in product.variants -%}
+                                    {%- if variant.available -%}
+                                        <option{% if variant == current_variant %} selected="selected"{% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+                                    {%- else -%}
+                                        <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+                                    {%- endif -%}
+                                {%- endfor -%}
+                            </select>
+                        </div>
+                        {%- unless settings.catalog-mode -%}
+                            <div class="pform-error-wrap errors" role="alert" hidden><span class="ml5 pform-error-msg"></span></div>
+                            <div class="fl product-action">
+                                <div class="fl f-wrap f-aic f-jcsb">
+                                    {%- if settings.qvqty -%}
+                                        <quantity-input class="qtyField mb15 overflow-hidden" title="{{ 'products.product.quantity' | t }}">
+                                            <a class="qtyBtn minus" name="minus" href="javascript:void(0);" aria-hidden="true"><i class="at at-minus-r" aria-hidden="true"></i></a>
+                                            <input type="number" id="quantity" name="quantity" value="1" min="1" class="pr_input qty" />
+                                            <a class="qtyBtn plus" name="plus" href="javascript:void(0);" aria-hidden="true"><i class="at at-plus-r" aria-hidden="true"></i></a>
+                                        </quantity-input>
+                                    {%- else -%}
+                                        <input type="text" id="quantity" name="quantity" value="1" class="hide pr_input qty" />
+                                    {%- endif -%}
+                                    {%- if settings.wishlist -%}
+                                        <div class="infolinks mfp-link fl f-jcsb f-wrap mb15">
+                                            <a class="wishlist addto-wishlist" href="{{pages[settings.wishlist_page].url}}" rel="{{ product.handle | handleize }}">{% render 'icon-wishlist' %} <span class="msg">{{ 'products.wishlist.add_to_wishlist' | t}}</span></a>
+                                        </div>
+                                    {%- endif -%}
+                                </div>
+                                <button type="submit" name="add" id="AddToCart-quickView" {% unless current_variant.available %}disabled="disabled"{% endunless %} class="btn pr_btn tc">
+                                    <span class="txt">
+                                        {% if current_variant.available and current_variant.inventory_quantity < 1 and current_variant.inventory_management == "shopify" %}
+                                            {{'products.product.pre_order' | t }}
+                                        {% elsif current_variant.available %}
+                                            {{ 'products.product.add_to_cart' | t }}
+                                        {% else %}
+                                            {{'products.product.sold_out' | t }}
+                                        {% endif %}
+                                    </span>
+                                    <div class="loading-overlay__spinner hidden"><i class="at at-circle-notch-r at-spin"></i></div>
+                                </button>
+                            </div>                        
+                        {%- endunless -%}
+                    {%- endform -%}
+                </product-form>
+                
+		</div>
+	</div>
+</div>
+</div>
+{%- unless product.empty? -%}
+<script type="application/json" id="ProductJson-quickView">{{ product | json }}</script>
+{% if first_3d_model %}
+	<script type="application/json" id="ModelJson-quickView">{{ product.media | where: 'media_type', 'model' | json }}</script>
+	<link id="shopify-model-viewer-ui-styles" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'" />
+{% endif %}
+{%- endunless -%}
+<div class="hide">
+  {% for variant in product.variants %}<span id="pvr-{{ variant.id }}">{{variant.inventory_quantity}}</span>{% endfor %}
+</div>
+<script src="{{ 'quickview.js' | asset_url }}"></script>
+<script type="text/javascript">
+{% capture variantImg %}
+{%- if product.variants.size > 1 -%}
+	var variantImages={},thumbnails,variant,variantImage,optionValue,productOptions = [];
+	{%- for variant in product.variants -%}
+		variant = {{ variant.featured_image.src | json }};
+		if(typeof variant !== 'undefined' && variant !== null){
+			variantImage =  variant.split('?')[0].replace(/http(s)?:/,'');
+			variantImages[variantImage] = variantImages[variantImage] || {};
+			{%- for option in product.options -%}
+				{%- assign option_value = variant.options[forloop.index0] -%}
+				{%- assign option_key = 'option-' | append: forloop.index0 -%}
+				if(typeof variantImages[variantImage][{{ option_key | json }}] === 'undefined'){
+					variantImages[variantImage][{{ option_key | json }}] = {{ option_value | json }};
+				} else {
+					var oldValue = variantImages[variantImage][{{ option_key | json }}];
+					if(oldValue !== null && oldValue !== {{ option_value | json }}){variantImages[variantImage][{{ option_key | json }}] = null;}
+				}
+			{%- endfor -%}
+		}
+		productOptions.push(variant);
+	{%- endfor -%}
+{% else %}
+	var variantImages = "";
+{%- endif -%}
+{% endcapture %}
+{{variantImg | strip_newlines | remove: "  " | remove: "	" }}
+
+var Shopify = Shopify || {};
+Shopify.optionsMap = {};
+Shopify.updateOptionsInSelector = function(selectorIndex){
+switch (selectorIndex){
+	case 0:
+		var key = 'root',
+		selector = $('#{{product_form_id}} {%- if isSwatch -%}.pvOpt0 .swatchInput:checked{%- else -%}.single-option-selector:eq(0){%- endif -%}');
+		break;
+	case 1:
+		var key = $('#{{product_form_id}} {%- if isSwatch -%}.pvOpt0 .swatchInput:checked{%- else -%}.single-option-selector:eq(0){%- endif -%}').val(),
+		selector = $('#{{product_form_id}} {%- if isSwatch -%}.pvOpt1 .swatchInput:checked{%- else -%}.single-option-selector:eq(1){%- endif -%}');
+		break;
+	case 2:
+		var key = $('#{{product_form_id}} {%- if isSwatch -%}.pvOpt0 .swatchInput:checked{%- else -%}.single-option-selector:eq(0){%- endif -%}').val();
+		key += ' / ' + $('#{{product_form_id}} {%- if isSwatch -%}.pvOpt1 .swatchInput:checked{%- else -%}.single-option-selector:eq(1){%- endif -%}').val();
+		var selector = $('#{{product_form_id}} {%- if isSwatch -%}.pvOpt2 .swatchInput:checked{%- else -%}.single-option-selector:eq(2){%- endif -%}');
+}
+var initialValue = selector.val();
+var availableOptions = Shopify.optionsMap[key];
+{%- if isSwatch -%}
+	$('#{{product_form_id}} .pvOpt' + selectorIndex + ' .swatch-element').each(function(){
+		if($.inArray($(this).data('value'), availableOptions) !== -1){
+			$(this).removeClass('soldout');
+		} else {
+			$(this).addClass('soldout');
+		}
+	});
+{%- else -%}
+	selector.empty();
+	for (var i=0; i<availableOptions.length; i++){
+		var option = availableOptions[i];
+		var newOption = $('<option></option>').val(option).html(option);
+		selector.append(newOption);
+	}
+{%- endif -%}
+if($.inArray(initialValue, availableOptions) !== -1){
+	selector.val(initialValue);
+}
+selector.trigger('change');
+};
+Shopify.linkOptionSelectors = function(product){
+for (var i=0; i<product.variants.length; i++){
+	var variant = product.variants[i];
+	if(variant.available){
+		Shopify.optionsMap['root'] = Shopify.optionsMap['root'] || [];
+		Shopify.optionsMap['root'].push(variant.option1);
+		Shopify.optionsMap['root'] = Shopify.uniq(Shopify.optionsMap['root']);
+
+		if(product.options.length > 1){
+			var key = variant.option1;
+			Shopify.optionsMap[key] = Shopify.optionsMap[key] || [];
+			Shopify.optionsMap[key].push(variant.option2);
+			Shopify.optionsMap[key] = Shopify.uniq(Shopify.optionsMap[key]);
+		}
+		if(product.options.length === 3){
+			var key = variant.option1 + ' / ' + variant.option2;
+			Shopify.optionsMap[key] = Shopify.optionsMap[key] || [];
+			Shopify.optionsMap[key].push(variant.option3);
+			Shopify.optionsMap[key] = Shopify.uniq(Shopify.optionsMap[key]);
+		}
+	}
+}
+Shopify.updateOptionsInSelector(0);
+if(product.options.length > 1) Shopify.updateOptionsInSelector(1);
+if(product.options.length === 3) Shopify.updateOptionsInSelector(2);
+$("#{{product_form_id}} {%- if isSwatch -%}.pvOpt0 .swatchInput{%- else -%}.single-option-selector:eq(0){%- endif -%}").change(function(){
+	Shopify.updateOptionsInSelector(1);
+	if(product.options.length === 3) Shopify.updateOptionsInSelector(2);
+	return true;
+});
+$("#{{product_form_id}} {%- if isSwatch -%}.pvOpt1 .swatchInput{%- else -%}.single-option-selector:eq(1){%- endif -%}").change(function(){
+	if(product.options.length === 3) Shopify.updateOptionsInSelector(2);
+	return true;
+});
+};
+{%- if product.available and product.options.size > 1 -%}
+	var $addToCartForm = $('#{{product_form_id}}');
+	if(window.MutationObserver && $addToCartForm.length){
+		if(typeof observer === 'object' && typeof observer.disconnect === 'function'){
+			observer.disconnect();
+		}
+		var config = { childList: true, subtree: true };
+		var observer = new MutationObserver(function(){
+			observer.disconnect();
+		});
+		observer.observe($addToCartForm[0], config);
+	}
+	Shopify.linkOptionSelectors(JSON.parse(document.getElementById('ProductJson-quickView').innerHTML));
+{%- elsif product.options.size == 1 -%}
+	{%- for variant in product.variants -%}
+		{%- unless variant.available -%}
+			//$('.single-option-selector option').filter(function(){ return $(this).html() === {{ variant.title | json }}; }).remove();
+			$("#{{product_form_id}} .swatch-element[data-value='{{ variant.title | escape }}']").addClass('soldout');
+		{%- endunless -%}
+	{%- endfor -%}
+	$('#{{product_form_id}} .single-option-selector').trigger('change');
+{%- endif -%}
+</script>
+{% schema %}
+  {
+    "name": "quick-view",
+    "settings": []
+  }
+{% endschema %}

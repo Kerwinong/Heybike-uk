@@ -1,0 +1,166 @@
+{%- assign secSt = section.settings -%}
+
+
+<section section-name="color-slider-full" class="{% render 'section-interva-set' , secSt:secSt %}" style="background-color: {{secSt.bg_color}};">
+  <div class="page-width text-center ">
+    <h1 class="md:text-4_5xl text-2_5xl mb-2">{{secSt.title}}</h1> 
+    <p class="text-lg mb-6">{{secSt.sub_title}}</p>
+
+    {% for block in section.blocks %}
+    {% assign bLength = forloop.length  %}
+    {% endfor %}
+    {% case bLength %}
+      {% when 1 %}
+          {% assign switchW = 'w-24' %}
+      {% when 2 %}
+          {% assign switchW = 'w-32' %}
+      {% when 3 %}
+          {% assign switchW = 'w-44' %}
+      {% when 4 %}
+          {% assign switchW = 'w-48' %}
+      {% when 5 %}
+          {% assign switchW = 'w-56' %}
+    {% endcase %}
+
+
+    <div class="rounded-full bg-white py-2 md:px-4 px-2 {{ switchW }} mx-auto shadow-sm">
+      <div tag-name="color-carousel" data-flickity='{"draggable": false, "asNavFor": "#carousel-main-{{section.id}}", "contain": true, "pageDots": false, "prevNextButtons": false}'>
+        {% for block in section.blocks %}
+        <div class="md:px-1 px-2">
+          <div tag-name="color-block" class="p-[2px] border-solid border-2 border-black-300 rounded-full transition-all duration-500">
+            <div class="cursor-pointer rounded-full w-7 h-7 shadow-inner transition-all duration-500" style="background-color:{{block.settings.color}}" ></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div id="carousel-main-{{section.id}}" class="md:-mt-2 mt-8" 
+      data-flickity='{"draggable": false,"pageDots": false, "fade": true, "prevNextButtons": false,"imagesLoaded": true}'> 
+      {% for block in section.blocks %}
+      {% assign media = block.settings.image %}
+        <div class='!transition-all'>
+          {{ media | image_url: width: 1920 | image_tag: class:'h-auto', lazyload: true }}
+          {% comment %} {{ block.settings.image | image_url: width: 1500 | image_tag }} {% endcomment %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</section>  
+
+{% schema %}
+  {
+    "name": "Color slider full v2",
+    "tag": "section",
+    "settings": [	
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Default set"
+      },
+ 		  {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default":"Bring an Ideal Urban Life"			
+      },
+ 		  {
+        "type": "text",
+        "id": "sub_title",
+        "label": "Sub title",
+        "default": "Made of aluminum alloy"			
+      },
+ 		  {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "#f5f5f5" 
+      }
+    ],
+    "blocks":[
+      {
+        "name": "Slide",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Switch background color",
+            "default": "#000000"			
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Select product image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+        {
+          "name": "Color slider full v2",
+          "category": "Heybike v2"
+        }
+      ]
+  }
+{% endschema %} 

@@ -1,0 +1,602 @@
+{%- assign secSt = section.settings -%}
+{% if secSt.section_style == 'heybike' %} {% assign hbStyle = true %} {% else %} {% assign hbStyle = false %} {% endif %}
+<style>
+@media (max-width:768px){
+.rgTxt p{
+  font-size:28px
+}
+
+}
+</style>
+{%- capture featureRow -%}
+<div class="content-indent {{ secSt.top-offeset}}{% if secSt.section_cov %} section-cover{% endif%}"
+ {% if secSt.section_cov %}style="background-color:{{secSt.sec_bg_clr}};"{% endif%}>
+  <div class="{% unless secSt.section_width %} page-width{% endunless %}">
+
+    {% for block in section.blocks limit: section.blocks.size %}
+
+      {%- assign blkSt = block.settings -%}
+      {%- assign box-delay = forloop.index | minus:1 -%}
+      {%- assign delay_time = 50 | times : box-delay -%}
+      {%- assign textCenter = blkSt.text_center -%}
+
+      {%- capture image_layout -%}
+      <div class="{% unless hbStyle %}fl1{% endunless %}{% if hbStyle %}md:w-3/5 w-full md:order-0 order-5{% endif %} imgCol wow{% if blkSt.layout == 'right' %} fadeInRight{% else %} fadeInLeft{% endif %}" data-wow-delay="{{delay_time}}ms">
+        {% if blkSt.image != blank %}
+          {%- assign img_url = blkSt.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+          {% if blkSt.image_mb != blank %}
+          <section class="md:hidden block"> {{ blkSt.image_mb | image_url: width: 980 | image_tag: height: 'auto', class: 'w-full mt-8', lazyload: true }} </section>
+          {% endif %}
+          
+          <span class="{% if blkSt.image_mb != blank %}md:block hidden{% endif %} imgWrapper"
+             style="max-width:{{ blkSt.image.width }}px;">
+            <img class="imgFl feature-row__image lazyload" width="{{ blkSt.image.width }}" height="{{ blkSt.image.height }}" loading="lazy"
+              data-src="{{ img_url }}" data-widths="[180, 360, 540, 720, 900]" data-aspectratio="{{ blkSt.image.aspect_ratio }}" data-sizes="auto" alt="{{ blkSt.image.alt | escape }}">
+          </span>
+
+
+
+        {% else %}
+        	{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+      {%- endcapture -%}
+
+      <div class="feature-row {% render 'section-interva-set' , secSt:secSt %} fl f-aic f-col f-row-md{% if secSt.snow_effect %} falling-snow{% if secSt.snow_style == "style2" %} style2 {% else %} style1{% endif %}{% endif %}" style="background-color:{{blkSt.bg}};">
+       
+       
+        {% if hbStyle %}
+        <div class="page-width xl:px-4 px-8 fl f-aic f-col f-row-md">
+        {% endif %}
+    
+        {{ image_layout }}
+        <div class="md:{{blkSt.text_align}} {% if textCenter %}md:text-left text-center {% endif %}{% unless hbStyle %}fl1 {% endunless %}{% if hbStyle %}md:w-2/5 md:mb-8 mb-0 md:mt-0 mt-10 {% endif %}feature-row__text {{ blkSt.layout }} wow{% if blkSt.layout == 'right' %} fadeInLeft{% else %} fadeInRight{% endif %}" data-wow-delay="{{delay_time}}ms">
+          <div class="row-text {% if hbStyle %}!m-0 !p-0{% endif %}">
+            {% if blkSt.title != blank %}
+              <h3 class="{% if hbStyle %}md:!text-4_5xl !text-2_5xl{% endif %} ttlTxt mb{{secSt.tmbm}} mb{{secSt.tmb}}-md" style="--tcl:{{blkSt.tcl}};--tfs:{{secSt.tfs}}px;--tff:var(--{{secSt.tff}});--tfw:{{secSt.tfw}};--tlh:{{secSt.tlh}};">{{ blkSt.title }}</h3>
+            {% endif %}
+            {% if blkSt.text != blank %}
+              <div class="{% if hbStyle %}md:text-xl{% endif %} rgTxt rte featured-row__subtext mb{{secSt.mbm}} mb{{secSt.mb}}-md" style="--cl:{{blkSt.cl}};--fs:{{secSt.fs}}px;--fw:{{secSt.fw}};--lh:{{secSt.lh}};">
+                  {{ blkSt.text }}
+              </div>
+            {% endif %}
+            {% if blkSt.button_label != blank and blkSt.button_link != blank %}
+              <a href="{{ blkSt.button_link }}" class="btn {{secSt.btn-size-mob}} {{secSt.btn-size-desk}}" style="--cl:{{blkSt.btncl}};--bg:{{blkSt.btnbg}};--bd:{{blkSt.btnbd}};">{{ blkSt.button_label }}</a>
+            {% endif %}
+          </div>
+
+          {% if hbStyle %}
+              <div class="md:mt-20 mt-10 ">
+              {% if blkSt.bottom_logo != blank %}
+                <a class="mr-4 inline-block" href="{{blkSt.logo_url}}">{{ blkSt.bottom_logo | image_url: height: 300 | image_tag: height: blkSt.bottom_logo.height, loading: 'lazy' }}</a>
+              {% endif %}
+              {% if blkSt.bottom_logo2 != blank %}
+                <a href="{{blkSt.logo_url2}}">{{ blkSt.bottom_logo2 | image_url: height: 300 | image_tag: height: blkSt.bottom_logo2.height, loading: 'lazy' }}</a>
+              {% endif %}
+              </div>
+          {% endif %}
+
+        </div>
+
+        {% if hbStyle %}
+        </div>
+        {% endif %}
+
+      </div>
+    {% endfor %}  
+  </div>
+</div>
+{%- endcapture -%}
+{{featureRow | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Banner With Text",
+    "class": "index-section image-with-text",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "none",
+        "options": [
+          {
+            "value": "extraLarge",
+            "label": "Extra Large"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "extraLarge",
+            "label": "Extra Large"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },	  	 
+      {
+        "type": "select",
+        "id": "top-offeset",
+        "label": "Top OffSet",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+        {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+    {
+      "type": "select",
+      "id": "section_style",
+      "label": "Section Style",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "heybike",
+          "label": "Heybike"
+        }
+      ]
+    },
+
+    {
+		"type":"checkbox",
+		"id":"section_width",
+		"label":"Fullwidth?",
+		"default": true
+	  },
+		 {
+        "type": "checkbox",
+        "id": "section_cov",
+        "label": "Add Background?",
+        "default": false
+      },	
+	  {
+        "type": "color",
+        "id": "sec_bg_clr",
+        "label": "Background",
+		"default":"#fafafa"	
+	  },
+	 {
+		"type":"checkbox",
+		"id":"snow_effect",
+		"label":"Enable Snow Effect?",
+		"default": false,
+		"info":"For Christmas"
+	   },
+        {
+          "type": "select",
+          "id": "snow_style",
+          "label": "Snow Style",
+          "default": "style1",         
+          "options": [
+            {
+            "value": "style1",
+            "label": "Falling Down"
+            },
+            {
+            "value": "style2",
+            "label": "Falling From Left"
+            }
+            ]
+          }, 	  	             
+	  {
+        "type": "header",
+        "content": "Appearance"
+      },
+      {
+		"type":"paragraph",
+		"content":"Title Text ====="
+	  },
+      {
+        "type": "range",
+        "id": "tfs",
+        "label": "Font Size",
+        "default": 30,
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "unit": "px"
+    },
+    {
+        "type": "select",
+        "id": "tff",
+        "label": "Font Family",
+        "default": "ft1",
+        "options": [
+            {
+                "value": "ft1",
+                "label": "Font 1"
+            },
+            {
+                "value": "ft2",
+                "label": "Font 2"
+            },
+            {
+                "value": "ft3",
+                "label": "Font 3"
+            }
+        ]
+    },
+    {
+        "type": "select",
+        "id": "tfw",
+        "label": "Font Weight",
+        "default": "700",
+        "options": [
+            {
+                "value": "300",
+                "label": "Light"
+            },
+            {
+                "value": "400",
+                "label": "Regular"
+            },
+            {
+                "value": "500",
+                "label": "Medium"
+            },
+            {
+                "value": "600",
+                "label": "Semi Bold"
+            },
+            {
+                "value": "700",
+                "label": "Bold"
+            }
+        ]
+    }, 	
+    {
+        "type": "range",
+        "id": "tlh",
+        "label": "Line Height",
+        "default": 1.2,
+        "min": 1.0,
+        "max": 2.0,
+        "step": 0.1,
+        "info": "Space between text lines. Default is set to 1.3"
+    }, 			  
+    {
+        "type": "range",
+        "id": "tmb",
+        "label": "Margin Bottom",
+        "default": 15,
+        "min":0,
+        "max":50,
+        "step":5,
+        "unit": "px"
+    }, 			              
+    {
+        "type": "range",
+        "id": "tmbm",
+        "label": "Margin Bottom (mobile)",
+        "default": 10,
+        "min":0,
+        "max":50,
+        "step":5,
+        "unit": "px"
+    },
+      {
+		"type":"paragraph",
+		"content":"Details ====="
+	  },
+      {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 14,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "400",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "lh",
+            "label": "Line Height",
+            "default": 1.6,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        }, 			  
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin Bottom",
+            "default": 15,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        }, 			              
+        {
+            "type": "range",
+            "id": "mbm",
+            "label": "Margin Bottom (mobile)",
+            "default": 10,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        },
+       {
+          "type": "select",
+          "id": "btn-size-desk",
+          "label": "Button Size: Desktop",
+          "default": "btn-md",
+          "options": [
+              {
+              "label": "Small",
+              "value": "btn-sm"
+              },
+              {
+              "label": "Medium",
+              "value": "btn-md"
+              },
+              {
+              "label": "Large",
+              "value": "btn-lg"
+              }	
+          ]
+        }, 
+        {
+          "type": "select",
+          "id": "btn-size-mob",
+          "label": "Button Size : Mobile",
+          "default": "mob-btn-sm",
+          "options": [
+              {
+              "label": "Small",
+              "value": "mob-btn-sm"
+              },
+              {
+              "label": "Medium",
+              "value": "mob-btn-md"
+              },
+              {
+              "label": "Large",
+              "value": "mob-btn-lg"
+              }	
+          ]
+        }
+    ],
+	 "blocks": [
+      {
+        "type": "row",
+        "name": "Block",
+        "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },  
+        {
+          "type": "image_picker",
+          "id": "image_mb",
+          "label": "Image (mobile)"
+        },  
+        {
+        "type": "select",
+        "id": "layout",
+        "label":"Image alignment",
+        "default": "left",
+        "options": [
+          { "value": "left","label":"Left"},
+          { "value": "right","label":"Right"}
+        ]
+      },	  
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Banner With Text"	
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+		
+      },
+      {
+        "type": "image_picker",
+        "id": "bottom_logo",
+        "label": "Content buttom logo"
+      },
+      {
+        "type": "url",
+        "id": "logo_url",
+        "label": "First logo link"
+      },
+      {
+        "type": "image_picker",
+        "id": "bottom_logo2",
+        "label": "Content buttom second logo"
+      },
+      {
+        "type": "url",
+        "id": "logo_url2",
+        "label": "Second logo link"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button Label",
+        "default": "Shop Now"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link",
+        "default": "/"
+      },      
+ 	  {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text Align",
+            "default": "text-left",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "tc",
+                "label": "Center"
+              },
+              {
+                "value": "tr",
+                "label": "Right"
+              }
+            ]
+      },
+      {
+        "type": "checkbox",
+        "id": "text_center",
+        "label": "Text align center?(mobile)",
+        "default": false
+      },
+	 {
+        "type": "header",
+        "content": "Set colors"
+      },
+      {
+        "type": "color",
+        "id": "tcl",
+        "label": "Title",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "cl",
+        "label": "Text",
+        "default": "#000"
+      },
+	  {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#f5f5f5"
+      },
+ 	  {
+        "type": "color",
+        "id": "btncl",
+        "label": "Button Text",
+		"default":"#fff"
+      },
+	  {
+        "type": "color",
+        "id": "btnbg",
+        "label": "Button Background",
+		"default":"#000"
+      },
+	  {
+        "type": "color",
+        "id": "btnbd",
+        "label": "Button Border", 
+		"default":"#000"
+      }
+      ]
+     }
+   ],
+    "presets": [
+      {
+        "name": "Banner With Text",       
+		"blocks": [
+          {
+            "type": "row"
+          }          
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,186 @@
+{%- assign secSt = section.settings -%}
+
+<section section-name="products-slider-full" class="{% render 'section-interva-set' , secSt:secSt %} " style="background-image: linear-gradient({{secSt.bg_color}}, #fff);">
+  <div class="page-width text-center md:mb-13 mb-6">
+    <h1 class="md:text-4_5xl text-2_5xl">{{section.settings.title}}</h1> 
+  </div>
+
+  <div class="relative">
+    <div class="absolute opacity-60 top-8 left-1/2 -translate-x-1/2 lg:w-[33vw] lg:h-[33vw] w-1/2 h-[50vw] rounded-full shadow-[0px -10px 5px 3px #ededed] bg-gradient-to-b via-white from-white to-transparent"></div>
+    <div class="relative" 
+    flickity-screen='pc'
+    data-flickity='{"wrapAround": "true","draggable": true,"selectedAttraction": 0.01,"friction": 0.15, "imagesLoaded": true, "watchCSS":true }'
+    >
+      {% for block in section.blocks %}
+      <div class="page-width xl:!px-28 md:!px-16 !px-6 md:mb-0 {% unless forloop.index == 2 %}mb-14{% endunless %} md:opacity-30 md:transition-opacity md:duration-700 md:delay-300 {% if forloop.index > 2 %} hidden md:block {% endif %}" >
+        {%- assign product = block.settings.product -%}
+        {% if product.title.size > 0 %}
+        
+        <div class="md:!bg-none md:rounded-none rounded-4xl relative" style="background-image: linear-gradient({{secSt.bg_color}}, #fff);">
+          <div tag-name="product-info"
+            class="xl:-ml-[12%] xl:absolute static md:mb-0 mb-8 left-4 top-4 md:opacity-0 md:transition-opacity md:duration-300 md:delay-700 w-full z-20 md:text-left text-center">
+            <div class="md:pt-0 pt-11">
+              <h2 class="lg:text-3_5xl md:text-3xl text-2xl mb-1">{{ product.title }}</h2>
+              <p class="md:text-1_5xl text-lg xl:mb-12 lg:mb-8 md:mb-4 mb-2 text-black-600">{{block.settings.info}}</p>
+              <div class="md:flex items-center">
+                <a href="{{ product.url }}" class="btn text-base py-1 md:px-5 px-3 md:inline-block hidden"> {{ section.settings.btn_Text }} </a>
+                <p class="text-xl md:ml-4 ml-0 font-medium">{{ product.price | money}}</p>
+              </div>
+            </div>
+            {% if block.settings.tags_image != blank %}
+            <div class="absolute right-4 top-4 md:w-auto w-[12.5%]">
+              <img src="{{ block.settings.tags_image | image_url: master }}">
+            </div>
+            {% endif %}
+
+          </div>
+            {% if block.settings.product_image %}
+            {% assign media = block.settings.product_image %}
+            {% else %}
+            {% assign media = product.featured_image %}
+            {% endif %}
+            {% assign imgWapClass = 'md:scale-90 md:transition-all md:duration-700 md:delay-300 mt-0' %}
+            <div class='{{imgWapClass}}' tag-name="product-img">
+              {{ media | image_url: width: 1920 | image_tag: width: media.width, height: media.height, lazyload: true, class:'h-auto z-10 relative' }}
+
+
+              <div class="block md:hidden absolute opacity-60 bottom-12 left-1/2 -translate-x-1/2 w-[50vw] h-[50vw] rounded-full shadow-[0px -10px 5px 3px #ededed] bg-gradient-to-b via-white from-white to-transparent"></div>
+
+            </div>
+            <div class="text-center md:hidden block mt-4"><a href="{{ product.url }}" class="btn btn-vi text-sm py-1 px-7 font-bold"> {{ section.settings.btn_Text }}</a></div>
+        </div>
+
+
+        {% endif %}
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+
+</section>  
+
+{% schema %}
+  {
+    "name": "Full screen slider v2",
+    "tag": "section",
+    "settings": [	
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Default set"
+      },
+ 		  {
+        "type": "text",
+        "id": "title",
+        "label": "Title"			
+      },
+ 		  {
+        "type": "text",
+        "id": "btn_Text",
+        "label": "Button Text",
+        "default": "Order now"			
+      },
+ 		  {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "#f3f5f9" 
+      }
+    ],
+    "blocks":[
+      {
+        "name": "Slide",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Select Product"
+          },
+          {
+            "type": "image_picker",
+            "id": "product_image",
+            "label": "Select product image (default use product first image)"
+          },
+          {
+            "type": "text",
+            "id": "info",
+            "label": "Product info",
+            "default":"Aviation grade magnesium alloy"
+          },
+          {
+            "type": "image_picker",
+            "id": "tags_image",
+            "label": "Select product tags"
+          }
+        ]
+      }
+    ],
+    "presets": [
+        {
+          "name": "Full screen slider  v2",
+          "category": "Heybike v2"
+        }
+      ]
+  }
+{% endschema %} 

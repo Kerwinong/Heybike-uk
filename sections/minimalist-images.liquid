@@ -1,0 +1,113 @@
+{%- assign secSt = section.settings -%}
+<section section-name="minimalist-images" style="background-color:{{secSt.bg_color}}"
+   class="{% render 'section-interva-set' , secSt:secSt %}">
+   {% if secSt.img != blank %}
+    <div class="{% unless secSt.full_width %}page-width{% endunless %}">
+    <div class="md:block hidden"> {% include 'aspect-ratio-img', media: secSt.img ,class: ''%} </div>
+    {% if secSt.img_mb != blank %}
+      <div class="block md:hidden"> {% include 'aspect-ratio-img', media: secSt.img_mb ,class: ''%} </div>
+    {% endif %}
+    </div>
+  {% endif %}
+</section>
+
+
+{% schema %}
+  {
+    "name": "Minimalist images v2.1",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+       "type": "color",
+       "id": "bg_color",
+       "label": "Background color",
+       "default":"#E8EBF0"
+     },
+     {
+      "type": "header",
+      "content": "Section content"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Is full width?",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "image"
+      },
+      {
+        "type": "image_picker",
+        "id": "img_mb",
+        "label": "Image mobile"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Minimalist images v2.1"
+      }
+    ]
+  }
+{% endschema %} 

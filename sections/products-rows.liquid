@@ -1,0 +1,333 @@
+{% assign secSt = section.settings %}
+{%- capture productRows -%}
+<div class="content-indent {{ section.settings.top-offeset}}{% if secSt.section_cov %} section-cover{% endif%}" {% if section.settings.section_cov %} style="background-color:{{section.settings.sec_bg_clr}};"{% endif%}>
+  <div class="{% unless section.settings.section_width %}page-width{% else %}fullwidth{% endunless %} wow fadeInUp" id="{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="collection-template">
+    {% render 'sec-title' %}
+
+    {%- liquid
+    	case section.settings.grid
+      		when 2
+    			assign image_size = '150,350,550,750,950'
+      		when 3 
+                assign image_size = '150,350,550,750'
+      		when 4 
+                assign image_size = '150,350,550,750'
+      		when 5 
+                assign image_size = '150,350,550'
+      		when 6 
+                assign image_size = '130,300,500'
+      		when 7
+                assign image_size = '130,280,400'
+    	endcase
+        assign collection = collections[section.settings.collection]
+        assign product_limit = section.settings.rows
+    -%}
+
+    <div class="grid rwcols-{{secSt.mobile-grid}} rwcols-md-{{secSt.tablet-grid}} rwcols-lg-{{secSt.grid}} grid-products">
+      {% for product in collection.products limit: product_limit %}
+     	 <div class="gitem">{% render 'product-card-grid', product: product, secSt: secSt, sizes: image_size %}</div>
+      {% else %}
+        {% for i in (1..product_limit) %}
+          <div class="gitem">
+            <div class="grid-view-item">
+                <a href="#" class="gimg-link">
+                  <div class="gitem-img">
+                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </a>
+              	 <br/>
+                <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                <div class="grid-view-item__meta">{% render 'product-price', product: product %}</div>              
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+      {% if section.settings.show_view_all != blank %}<div class="tc"><a href="{{ collection.url }}" class="btn {{section.settings.btn-size-mob}} {{section.settings.btn-size-desk}}">{{ section.settings.show_view_all}}</a></div>{% endif %}
+  </div>
+  {% if section.settings.section_cov %}</div> {% endif%}
+</div>
+{%- endcapture -%}
+{{ productRows | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Products Rows",
+    "class": "index-section product-rows",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"		
+      },
+ 	  {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Describe your products, collection etc..."
+      },
+        {
+        "type": "paragraph",
+        "content": "Section ==="
+      },
+	  {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+      }, 	
+       {
+		"type":"checkbox",
+		"id":"section_width",
+		"label":"Fullwidth?",
+		"default": false
+	   },
+      {
+        "type": "checkbox",
+        "id": "section_cov",
+        "label": "Add Background?",
+        "default": false
+      },
+	  {
+        "type": "color",
+        "id": "sec_bg_clr",
+        "label": "Background",
+		"default":"#fafafa",
+		"info":"select light color"
+	  },     
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Select Collection"
+      },
+      {
+        "type": "paragraph",
+        "content": "Grid ==="
+      },
+	  {
+        "type": "select",
+        "id": "prbox_style",
+        "label": "Select Style",
+        "default": "style1",
+        "options": [
+          {
+            "value": "style1",
+            "label": "Style 1 - Default Info Center"
+          },
+          {
+            "value": "style2",
+            "label": "Style 2 - Info Hover Image"
+          },
+          {
+            "value": "style3",
+            "label": "Style 3 - Info Below Image"
+          },
+          {
+            "value": "style4",
+            "label": "Style 4 - Default Info Left"
+          },
+ 		  {
+            "value": "style5",
+            "label": "Style 5 - Display Text Button"
+          }
+        ],
+		"info":"[chekout grid style](https://avon-demo.myshopify.com/pages/grid-style)"      
+      },
+      {
+        "type": "paragraph",
+        "content": "Products per row ==="
+      }, 	
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Desktop",
+        "default": 4,
+        "min": 2,
+        "max": 7,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "tablet-grid",
+        "label": "Tablet",
+        "default": 3,
+        "min": 1,
+        "max": 5,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "mobile-grid",
+        "label": "Mobile",
+        "default": 2,
+        "min": 1,
+        "max": 3,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "rows",
+        "label": "Number of products to show",
+        "default": 8,
+        "min": 1,
+        "max": 20,
+        "step": 1
+      },
+      {
+        "type": "checkbox",
+        "id": "secondary_image",
+        "label": "Show Second Image on hover?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show Vendor Name?",
+        "default": false
+      },       
+      {
+        "type": "checkbox",
+        "id": "prlist_btn_show",
+        "label": "Hide Buttons?",
+        "default": false,
+        "info": "add to cart,wishlist,quickview"
+      },
+      {
+        "type": "checkbox",
+        "id": "btn_mobiles",
+        "label": "Hide Buttons on Mobile?",
+        "default": false
+      }, 
+     {
+	 
+        "type": "text",
+        "id": "show_view_all",
+        "label": "Button Text",
+		"info":"Button to go to the collection page"		
+      },
+     {
+        "type": "select",
+        "id": "btn-size-desk",
+        "label": "Button Size: Desktop",
+        "default": "btn-md",
+        "options": [
+          {
+            "label": "Small",
+            "value": "btn-sm"
+          },
+          {
+            "label": "Medium",
+            "value": "btn-md"
+          },
+		 {
+            "label": "Large",
+            "value": "btn-lg"
+          }	
+        ]
+      }, 
+{
+        "type": "select",
+        "id": "btn-size-mob",
+        "label": "Button Size : Mobile",
+        "default": "mob-btn-sm",
+        "options": [
+          {
+            "label": "Small",
+            "value": "mob-btn-sm"
+          },
+          {
+            "label": "Medium",
+            "value": "mob-btn-md"
+          },
+		 {
+            "label": "Large",
+            "value": "mob-btn-lg"
+          }	
+        ]
+      },      
+      {
+        "type": "header",
+        "content": "Color Swatches"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_color_swatch",
+        "label": "Show ?",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "color_type",
+        "label": "Swatch Type",
+        "default": "color",
+        "info": "Some colors appear white? Add custom colors from 'Custom Colors' section which appear below footer section",
+        "options": [
+          {
+            "value": "color",
+            "label": "Color Swatch"
+          },
+          {
+            "value": "vrimage",
+            "label": "Variant Image"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "vr_bg_position",
+        "label": "Variant Image Position",
+        "default": "50% 0",
+        "options": [
+          {
+            "value": "50% 0",
+            "label": "Center Top"
+          },
+          {
+            "value": "50% 50%",
+            "label": "Center Center"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "color_size",
+        "label": "Swatch Size",
+        "default": "small",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ]
+      }      
+    ],
+    "presets": [
+      {
+        "name": "Products Rows"        
+      }
+    ]
+  }
+{% endschema %}

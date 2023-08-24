@@ -1,0 +1,78 @@
+{% assign secSt = section.settings %}
+<div class="content-indent {{ section.settings.top-offeset}}">
+  <div class="{% unless section.settings.section_width %}page-width{% else %}fullwidth{% endunless %} wow fadeIn" {% if secSt.section_width %}style="--spd:{{ secSt.pad-desk}}px;--spdt:{{ secSt.pad-ipad}}px;--spdm:{{ secSt.pad-mbl}}px;"{% endif %}>
+
+    {%- if section.settings.title != blank  or section.settings.subtitle != blank -%}
+    <div class="sec-ttl {{ settings.title_align}}">
+      <h3 class="h3">{{ section.settings.title }}</h3>
+      {%- if section.settings.subtitle != blank -%}<span>{{section.settings.subtitle}}</span>{%- endif -%}                 
+    </div>
+    {% endif %} 
+
+    <div class="insta-shop">
+      {{ pages[section.settings.insta_page].content }}
+    </div>
+
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Instagram",  
+    "settings": [	  
+     {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Heading"
+      },
+      {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Describe your products, collection, content etc..."
+      },
+	 {
+        "type": "page",
+        "id": "insta_page",
+        "label": "Select Page",
+		"info":"[how to create page and place code](https://www.adornthemes.com/knowledge-base/add-instagram-shop-shopify/)"
+      },
+	 {
+		 "type": "paragraph",
+		 "content":"Section==="
+      },
+	 {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+        },
+      {
+          "type":"checkbox",
+          "id":"section_width",
+          "label":"Fullwidth?",
+          "default": true
+        }		
+    ],   
+    "presets": [
+      {
+        "name": "Instagram Shop",
+        "category": "5. Social"       
+      }
+    ]
+  }
+{% endschema %}

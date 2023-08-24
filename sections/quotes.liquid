@@ -1,0 +1,276 @@
+{% assign secSt = section.settings %}
+<div class="content-indent {{ section.settings.top-offeset}}">
+  <div class="{% unless secSt.section_width %} page-width{% else %} fullwidth npd{% endunless %}" data-section-id="{{ section.id }}" data-section-type="quotes">
+    	<div class="sec-{{section.id}} quote-bg bgImg section-cover wow fadeInUp lazyload" {% if secSt.bgimg != blank %}data-bgset="{% render 'bgset', image: secSt.bgimg %}" data-sizes="auto" data-parent-fit="contain"{% endif %} style="--bg:{{secSt.bg}};">
+			<div class="quote-bg-inner" style="--stcl:{{secSt.stcl}};--qcl:{{secSt.qcl}};--qbg:{{secSt.qbg}};--qfs:{{secSt.qfs}}px;--qfsm:{{secSt.qfsm | divided_by: 100.0 }}rem;--rcl:{{secSt.rcl}};">
+				{%- render 'sec-title' -%}
+				{%- if section.blocks.size > 0 -%}
+                    {% capture paginaton %}
+                        {%- if secSt.arrow -%}--arrow: {{secSt.arwCl}};{%- endif -%};	
+                        {%- if secSt.dots -%}--dotsa: {{secSt.dotCl}};--dots: {{secSt.dotCl |   color_modify:'alpha', 0.5 }};{%- endif -%};
+                    {%- endcapture -%}
+				<div class="quotes-wrapper {{section.settings.quoteStyle}}">
+					<div class="grid quotes-slider ctStyle rwcols-1 rwcols-md-{% if secSt.quoteStyle == "style1" %}1{% else %}3{% endif %} arwOut" id="Quotes-{{section.id}}" style="{{paginaton}}"
+                         data-flickity='{ "cellAlign":"left","groupCells":true,"wrapAround":true,"pageDots":{{secSt.dots}},"prevNextButtons":{{secSt.arrow}}{%- if secSt.autoplay -%},"autoPlay":{{secSt.autoplay_speed | times: 1000}}{% endif %}{%- if settings.rtl -%},"rightToLeft": true{%- endif -%} }'>
+					{%- for block in section.blocks -%}
+						<div class="gitem" id="qt{{ block.id }}" {{ block.shopify_attributes }}>
+                            <div class="qtSlide{% if secSt.isbox %} bx{% endif %}{% if secSt.quoteStyle == "style1" %} w_100{% endif %}">
+                                {%- if block.settings.image != blank -%}
+                                    {% assign sizes = "100,160,280" %}
+                                    {%- if section.settings.quoteStyle != "style3" -%}{% assign sizes = "160,320,460,600" %}{%- endif -%}
+                                    <div class="author-pic {{section.settings.quoteStyle}} bgImg lazyload" data-bgset="{% render 'prgrid-img', image: block.settings.image, sizes: sizes %}" data-sizes="auto" data-parent-fit="contain"></div>
+                                {%- endif -%}
+                                <blockquote class="quote-txt tc">             
+                                    {%- if block.settings.quote != blank -%}<div class="rte-setting">{{ block.settings.quote }}</div>{%- endif -%}
+                                    {%- if block.settings.display_rat -%}
+                                        {%- if block.settings.rating == 1 -%}<span class="ratings"><i class="at at-star"></i><i class="at at-star-o"></i><i class="at at-star-o"></i><i class="at at-star-o"></i><i class="at at-star-o"></i></span>{%- endif -%}
+                                        {%- if block.settings.rating == 2 -%}<span class="ratings"><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star-o"></i><i class="at at-star-o"></i><i class="at at-star-o"></i></span>{%- endif -%}
+                                        {%- if block.settings.rating == 3 -%}<span class="ratings"><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star-o"></i><i class="at at-star-o"></i></span>{%- endif -%}
+                                        {%- if block.settings.rating == 4 -%}<span class="ratings"><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star-o"></i></span>{%- endif -%}
+                                        {%- if block.settings.rating == 5 -%}<span class="ratings"><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star"></i><i class="at at-star"></i></span>{%- endif -%}
+                                    {%- endif -%}
+                                    {%- if block.settings.author != blank -%}<p class="authour">{{ block.settings.author }}</p>{%- endif -%}
+                                </blockquote>
+                            </div>
+						</div>
+					{%- endfor -%}
+					</div>
+				</div>
+				{%- endif -%}
+				{%- if section.blocks.size == 0 -%}{% include 'no-blocks' %}{%- endif -%}
+			</div>
+		</div>
+	</div>
+</div>
+{% schema %}
+  {
+    "name": "Testimonials",
+    "class": "index-section",
+    "max_blocks": 9,
+    "settings": [
+       {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Testimonials"
+      },
+	  {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+        }, 	
+       {
+		"type":"checkbox",
+		"id":"section_width",
+		"label":"Fullwidth?",
+		"default": true
+	  },  
+        {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#f5f5f5"
+      },
+ 	  {
+        "type": "paragraph",
+        "content":"OR"
+      },
+      {
+        "type": "image_picker",
+        "id": "bgimg",
+        "label": "Background Image"
+      },		
+	 {
+        "type": "select",
+        "id": "quoteStyle",
+        "label": "Select Style",
+        "default": "style1",
+        "options": [
+          {
+            "label": "Style 1 - 1 Column",
+            "value": "style1"
+          },
+          {
+            "label": "Style 2 - 3 Column",
+            "value": "style2"
+          },
+          {
+            "label": "Style 3 - 3 Column",
+            "value": "style3"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "stcl",
+        "label": "Heading",
+        "default": "#444"
+      }, 	
+      {
+        "type": "color",
+        "id": "qcl",
+        "label": "Text",
+        "default": "#444"
+      },
+      {
+            "type": "range",
+            "id": "qfs",
+            "label": "Font Size",
+            "default": 15,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+				{
+					"type": "range",
+					"id": "qfsm",
+					"label": "Font Size (mobile)",
+					"default": 85,
+					"min": 0,
+					"max": 500,
+					"step": 5,
+					"unit": "%"
+				},  
+ 		{	
+        "type": "color",
+        "id": "rcl",
+        "label": "Rating Stars",
+        "default": "#EBB868"		
+      },
+      {
+                    "type": "range",
+                    "id": "rfs",
+                    "label": "Icons Size",
+                    "default": 16,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },
+      {
+		"type":"checkbox",
+		"id":"isbox",
+		"label":"Add Box?",
+		"default": false
+	  },
+	  {
+        "type": "color",
+        "id": "qbg",
+        "label": "Box Background",
+        "default": "#fff"
+       },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Auto-rotate slides",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "autoplay_speed",
+        "label": "Autoplay Speed",
+        "default": 5,
+        "min": 1,
+        "max": 30,
+        "step": 1
+      },
+	  {
+        "type": "checkbox",
+        "id": "arrow",
+        "label": "Show Next/Previous Arrows?",
+        "default": true
+      },
+	  {
+        "type": "color",
+        "id": "arwCl",
+        "label": "Arrow Color",
+        "default": "#000"
+      },
+	  {
+        "type": "checkbox",
+        "id": "dots",
+        "label": "Show Dotted Navigation?",
+        "default": false
+      },
+	  {
+        "type": "color",
+        "id": "dotCl",
+        "label": "Dots Color",
+        "default": "#000"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "quote",
+        "name": "Testimonial",
+        "settings": [
+ 		  {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Upload Image",
+			"info":"Style 1 & Style 2: recommended size 100x100. Style 3: recommended size 500x300"
+          },
+          {
+            "type": "richtext",
+            "id": "quote",
+            "label": "Text",
+            "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+          },
+          {
+            "type": "textarea",
+            "id": "author",
+            "label": "Author",
+            "default": "Author's name"
+          },
+		   {
+            "type":"checkbox",
+            "id":"display_rat",
+            "label":"Display Ratings?",
+            "default": true
+          },
+          {
+            "type": "range",
+            "id": "rating",
+            "label": "Select Rating",
+            "default": 5,
+            "min": 1,
+            "max": 5,
+            "step": 1          
+          } 	
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",        
+        "blocks": [
+          {
+            "type": "quote"
+          },
+          {
+            "type": "quote"
+          },
+          {
+            "type": "quote"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

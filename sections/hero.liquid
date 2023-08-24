@@ -1,0 +1,653 @@
+{%- assign secSt = section.settings -%}
+{%- capture heroBanner -%}
+<div class="content-indent {{ secSt.top-offeset}}">
+  <div class="{% unless secSt.section_width %}page-width{% else %}fullwidth npd{% endunless %}"{% if secSt.section_width %} style="--spd:{{ secSt.pad-desk}}px;--spdt:{{ secSt.pad-ipad}}px;--spdm:{{ secSt.pad-mbl}}px;"{% endif %}>
+   
+    {% if secSt.button_link != blank and secSt.link_image %}<a href="{{secSt.button_link}}" class="hero-outer"> {% endif %} 
+    
+    <div class="hero flex{% if secSt.snow_effect %} falling-snow{% if secSt.snow_style == "style2" %} style2{% else %} style1{% endif %}{% endif %} hero-{{ section.id }} wow fadeIn" style="--ht:{{secSt.ds_height}}px;--htt:{{secSt.tb_height}}px;--htm:{{secSt.mb_height}}px;">
+      {% if secSt.image != blank %}
+      <div class="heroImg bgImg pa h_100 w_100 lazyload{% if secSt.parallax_scroll %} parallax{% endif %}{% if secSt.mb_image != blank %} hide-sm{% endif %}"
+           data-bgset="{% render 'bgset', image: secSt.image %}" data-sizes="auto" data-parent-fit="contain"
+           style="background-image: url('{{ secSt.image | img_url: '100x' }}'); background-position:center {{ secSt.alignment }};"
+           {% if secSt.parallax_scroll %} data-stellar-background-ratio="0.08" data-stellar-vertical-offset="0" {% endif %}></div>
+      {% endif %}
+      
+      {% if secSt.mb_image != blank %}
+      <div class="heroImg bgImg pa h_100 w_100 hide-md hide-lg lazyload" data-bgset="{% render 'bgset', image: secSt.mb_image %}" data-sizes="auto" data-parent-fit="contain"
+           style="background-image:url('{{ secSt.mb_image | img_url: '100x' }}'); background-position:center {{ secSt.alignment }};"></div>
+      {% endif %}      
+      
+      {% if secSt.image == blank %}<div class="placeholder-background">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>{% endif %}
+
+      <div class="fl1 fl hero__inner page-width {{secSt.bxalign}}" style="max-width:{{ secSt.wd }}px">
+              {% if secSt.pretext != blank or secSt.title != blank or secSt.text != blank %}
+              <div class="wrap-text {{secSt.textalign}}{% if secSt.isbox %} bx{% endif %}"{% if secSt.isbox %} style="--bg:{{secSt.bg | color_modify: 'alpha', secSt.opt}};--bdr:{{secSt.bdr}}px;"{% endif %}>
+                {% if secSt.pretext != blank %}
+                  <p class="rgTxt {{secSt.pff}} mb{{secSt.pmbm}} mb{{secSt.pmb}}-md" style="--cl:{{secSt.pcl}};--fs:{{secSt.pfs}}px;--fsm:{{secSt.pfsm | divided_by: 100.0 }}rem;--fw:{{secSt.pfw}};--lh:{{secSt.plh}};">{{ secSt.pretext }}</p>
+                {% endif %}
+                {% if secSt.title != blank %}
+                  <h2 class="ttlTxt mega-title mb{{secSt.tmbm}} mb{{secSt.tmb}}-md" style="--tcl:{{secSt.tcl}};--tfs:{{secSt.tfs}}px;--tfsm:{{secSt.tfsm | divided_by: 100.0 }}rem;--tff:var(--{{secSt.tff}});--tfw:{{secSt.tfw}};--tlh:{{secSt.tlh}};">{{ secSt.title }}</h2>
+                {% endif %}
+                {% if secSt.hero_dealtimer %}
+                      <div class="heroSaleTime atCounter tc desktop" data-date="{{secSt.cnt_date}}" style="--cl:{{secSt.cntcl}};--bg:{{secSt.cntbg}};--bd:{{secSt.cntbd}};">
+                        <span><span class="tm days">00</span>{{'date_formats.days' | t}}</span><span><span class="tm hours">00</span>{{ 'date_formats.hours' | t }}</span><span><span class="tm minutes">00</span>{{'date_formats.minuts' | t}}</span><span><span class="tm seconds">00</span>{{'date_formats.seconds' | t}}</span>
+                      </div>
+                {% endif %}
+                {% if secSt.text != blank %}
+                  <div class="rgTxt rte-setting mega-subtitle mb{{secSt.mbm}} mb{{secSt.mb}}-md" style="--cl:{{secSt.cl}};--fs:{{secSt.fs}}px;--fsm:{{secSt.fsm | divided_by: 100.0 }}rem;--fw:{{secSt.fw}};--lh:{{secSt.lh}};">{{ secSt.text }}</div>
+                {% endif %}
+                {% if secSt.button_label != blank and secSt.button_link != blank %}
+                    {% if secSt.link_image %}
+                        <span class="btn {{secSt.btn-size-mob}} {{secSt.btn-size-desk}} {{secSt.btn-style}}">{{ secSt.button_label }}</span>
+                    {% else %}
+                        <a href="{{secSt.button_link}}" class="btn {{secSt.btn-size-mob}} {{secSt.btn-size-desk}} {{secSt.btn-style}}">{{ secSt.button_label }}</a>
+                    {% endif %}
+                {% endif %}
+              </div>
+              {% endif %}
+          </div>      
+    </div>
+    
+    {% if  secSt.button_link != blank  %}</a> {% endif %} 
+    
+  </div>
+</div>
+{%- endcapture -%}
+{{heroBanner | strip_newlines | remove: "  " | remove: "	" }}
+
+{% schema %}
+  {
+    "name": "Parallax Banner",
+    "class": "index-section",
+    "settings": [
+	 {
+		 "type": "paragraph",
+		 "content":"[Preview style](https://www.adornthemes.com/parallax-banner/)"
+      },	
+	 {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+        },
+		{
+		"type":"checkbox",
+		"id":"section_width",
+		"label":"Fullwidth?",
+		"default": true
+	  },
+	  {
+        "type": "header",
+        "content": "Banner"
+      },	 
+	  {
+		"type":"paragraph",
+		"content":"Height ==="
+	  },
+      {
+        "type": "range",
+        "id": "ds_height",
+        "label": "Desktop",
+        "default": 600,
+        "min": 100,
+        "max": 1000,
+        "step": 10
+      },
+      {
+        "type": "range",
+        "id": "tb_height",
+        "label": "Tablet",
+        "default": 350,
+        "min": 100,
+        "max": 1000,
+        "step": 10
+      },  
+	  {
+        "type": "range",
+        "id": "mb_height",
+        "label": "Mobile",
+        "default": 250,
+        "min": 100,
+        "max": 1000,
+        "step": 10
+      },  
+	 {
+        "type": "checkbox",
+        "id": "parallax_scroll",
+        "label": "Enable Parallax Scrolling",
+        "default":true,
+		"info":"Only applies to desktop. For Parallax Effect Recommanded Image Size 1920x1000."
+      },	  
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info":"For Best Resolution recommended image width 1920px and height should be as per your above selections."
+      },
+	  {
+            "type": "image_picker",
+            "id": "mb_image",
+            "label": "Mobile Image",
+			"info": "Recommended width 750px and height as per above mobile height. If mobile image is blank, dekstop image will be used."
+       },
+      {
+        "type": "select",
+        "id": "alignment",
+        "label": "Image Alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Middle"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "pretext",
+        "label": "Pre Text ====",
+        "default": "I AM AVONE"
+      },
+	  {
+        "type": "color",
+        "id": "pcl",
+        "label": "Text Color",
+        "default": "#333"
+      },
+      {
+            "type": "range",
+            "id": "pfs",
+            "label": "Font Size",
+            "default": 15,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "pff",
+            "label": "Font Family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "pfw",
+            "label": "Font Weight",
+            "default": "400",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "plh",
+            "label": "Line Height",
+            "default": 1.3,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        }, 			  
+        {
+            "type": "range",
+            "id": "pmb",
+            "label": "Margin Bottom",
+            "default": 10,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        }, 			              
+        {
+            "type": "range",
+            "id": "pmbm",
+            "label": "Margin Bottom (mobile)",
+            "default": 5,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        },
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading ====",
+        "default": "BEST SELLING SHOPIFY <br/> THEME IN THE MARKET"
+      },
+	  {
+        "type": "color",
+        "id": "tcl",
+        "label": "Text Color",
+        "default": "#000"
+      },
+      {
+            "type": "range",
+            "id": "tfs",
+            "label": "Font Size",
+            "default": 30,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "tff",
+            "label": "Font Family",
+            "default": "ft2",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "tfw",
+            "label": "Font Weight",
+            "default": "700",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "tlh",
+            "label": "Line Height",
+            "default": 1.3,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        }, 			  
+        {
+            "type": "range",
+            "id": "tmb",
+            "label": "Margin Bottom",
+            "default": 10,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        }, 			              
+        {
+            "type": "range",
+            "id": "tmbm",
+            "label": "Margin Bottom (mobile)",
+            "default": 5,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text ====",
+        "default": "<P>The design of your site plays a crucial role. It can make or break your website leading to sales either falling flat or converting profitably.</P>"
+      },
+	  {
+        "type": "color",
+        "id": "cl",
+        "label": "Text Color",
+        "default": "#000"
+      },
+      {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 16,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "400",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "lh",
+            "label": "Line Height",
+            "default": 1.6,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.6"
+        },
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin Bottom",
+            "default":30,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "mbm",
+            "label": "Margin Bottom (mobile)",
+            "default": 20,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        },
+	  {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button Label",
+		"default": "SHOP COLLECTION"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link",
+		"default": "/"
+      },
+ 	  {
+        "type": "checkbox",
+        "id": "link_image",
+        "label": "Display link on entire image",
+		"info":"This option will add link on entire image instead of only button",
+		"default":false
+      },
+	 {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Select Button",
+            "default": "btn",
+            "options": [
+              {
+              "label": "Solid Button 1",
+              "value": "btn"
+              },
+              {
+              "label": "Solid Button 2",
+              "value": "btn2"
+              },
+              {
+              "label": "Solid Button 3",
+              "value": "btn3"
+              },
+              {
+              "label": "Border Button 1",
+              "value": "bdr-btn1"
+              },
+              {
+              "label": "Border Button 2",
+              "value": "bdr-btn2"
+              } 
+            ]
+        },
+	  {
+          "type": "select",
+          "id": "btn-size-desk",
+          "label": "Button Size: Desktop",
+          "default": "btn-md",
+          "options": [
+            { "label": "Small", "value": "btn-sm" },
+            { "label": "Medium", "value": "btn-md" },
+            { "label": "Large", "value": "btn-lg" }	
+          ]
+	  }, 
+      {
+          "type": "select",
+          "id": "btn-size-mob",
+          "label": "Button Size : Mobile",
+          "default": "mob-btn-sm",
+          "options": [
+          	{ "label": "Small", "value": "mob-btn-sm" },
+          	{ "label": "Medium", "value": "mob-btn-md" },
+          	{ "label": "Large", "value": "mob-btn-lg" }
+          ]
+      },
+ 	  {
+        "type": "checkbox",
+        "id": "isbox",
+        "label": "Add Box?",
+		"default": true
+      },		
+	 {
+        "type": "color",
+        "id": "bg",
+        "label": "Background Color",
+        "default": "#fff"
+      },      
+	 {
+        "type": "range",
+        "id": "opt",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Background Opacity",
+        "unit": "%",
+        "default": 0.9
+      },      
+	 {
+        "type": "range",
+        "id": "bdr",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Border Radius",
+        "unit": "px",
+        "default": 0
+      },
+ 	  {
+            "type": "select",
+            "id": "textalign",
+            "label": "Text Align",
+            "default": "tc",
+            "options": [
+              { "label": "Left", "value": "tl" },
+  			  { "label": "Center", "value": "tc" },             
+			  { "label": "Right", "value": "tr" }
+            ]
+      },
+ 	  {
+            "type": "select",
+            "id": "bxalign",
+            "label": "Box Position",
+            "default": "f-jcc f-aic",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic" },
+			  { "label": "Right",         "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie" }
+            ]
+      },      
+	 {
+        "type": "range",
+        "id": "wd",
+        "min": 1200,
+        "max": 2000,
+        "step": 10,
+        "label": "Container Max Width (desktop)",
+        "unit": "px",
+        "default": 1200
+      }, 	 
+	  {
+		"type":"checkbox",
+		"id":"snow_effect",
+		"label":"Enable Snow Effect?",
+		"default": false,
+		"info":"For Christmas"
+	  },
+      {
+          "type": "select",
+          "id": "snow_style",
+          "label": "Snow Style",
+          "default": "style1",         
+          "options": [
+            {
+            "value": "style1",
+            "label": "Falling Down"
+            },
+            {
+            "value": "style2",
+            "label": "Falling From Left"
+            }
+            ]
+      },
+	  {
+        "type": "header",
+        "content": "Countdown Timer"
+      },
+ 	  {
+		"type":"checkbox",
+		"id":"hero_dealtimer",
+		"label":"Display?",
+		"default": false,
+		"info":"please click save button to view"
+	  },
+	  {
+        "type": "text",
+        "id": "cnt_date",
+        "label": "Enter Date",
+        "info": "Date Formate should be Month\/Day\/Year.i.e mm\/dd\/year, 11\/25\/2023",
+        "default": "12\/20\/2023"
+      },
+      {
+        "type": "color",
+        "id": "cntbg",
+        "label": "Background",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "cntcl",
+        "label": "Text",
+        "default": "#eee"
+      },
+      {
+        "type": "color",
+        "id": "cntbd",
+        "label": "Border",
+        "default": "#000"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Parallax Banner"     
+      }
+    ]
+  }
+{% endschema %}

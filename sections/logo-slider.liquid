@@ -1,0 +1,182 @@
+{%- assign secSt = section.settings -%}
+{% if secSt.style != "default" %} {% assign isStyle = true %} {% else %} {% assign isStyle = false %} {% endif %}
+
+<section section-name="logo-slider" class="{% render 'section-interva-set' , secSt:secSt %}" 
+style="{% if secSt.bg_color != blank %}background-color: {{ secSt.bg_color}};{% endif %}">
+
+  <div class="page-width xl:px-4 md:px-8 px-6">
+    <div class="md:rounded-section rounded-4xl bg-no-repeat bg-cover md:py-20 py-10 bg-center" style="{% if secSt.bg_img != blank %}background-image: url({{ secSt.bg_img | image_url:master}});{% endif %}">
+      <div class="md:w-3/5 md:px-0 px-4 mx-auto">
+
+        <div id="carousel-main-{{section.id}}" 
+          data-flickity='{"pageDots": false, "fade": true,"prevNextButtons": false, "wrapAround": true, "lazyLoad": true{% if isStyle %}, "autoPlay": true{% endif %} }'>
+          {% for block in section.blocks %}
+          <div class="md:mb-20 mb-14 text-center" style="color:{{secSt.text_color}};" >
+
+            {% if isStyle %}
+            <div class="flex items-center mb-6 justify-center">
+              {% for i in (1..5) %}
+              <svg t="1685013304429" class="mx-1" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2640" data-spm-anchor-id="a313x.7781069.0.i4" width="30" height="30"><path d="M512 39.384615l169.353846 295.384615 342.646154 63.015385-240.246154 248.123077L827.076923 984.615385l-315.076923-145.723077L196.923077 984.615385l43.323077-334.769231L0 401.723077l342.646154-63.015385L512 39.384615" fill="#F3D958" p-id="2641"></path></svg>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <p class="mb-8 md:text-3xl text-2xl font-bold">{{block.settings.text_main}}</p>
+            <p class="md:text-lg">{{block.settings.text_sub}}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+      <section {% if isStyle %}class=" mx-auto"{% endif %} >
+        <div data-flickity='{"draggable": false, "asNavFor": "#carousel-main-{{section.id}}", "contain": true, {% unless isStyle %}"pageDots": false,{% endunless %} "wrapAround": true,"prevNextButtons": false,"selectedAttraction": 0.01,"friction": 0.15}'>
+          {% for block in section.blocks %}
+          <div class="{% if isStyle %}w-full{% else %}lg:w-1/5 md:w-1/4 w-1/3{% endif %} cursor-pointer text-center">
+            {% assign media = block.settings.logo_image %}
+            {{ media | image_url: width: 200 | image_tag: height: media.height, lazyload: true, class: 'grayscale transition-all scale-90 max-h-9 md:h-auto h-8 object-contain' }}
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+</section> 
+
+
+{% schema %}
+  {
+    "name": "Logo slider v2",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Default set"
+      },
+      {
+        "type": "select",
+        "id": "style",
+        "label": "Section style",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "style1",
+            "label": "style1(has star)"
+          }
+        ]
+      },
+ 		  {
+        "type": "image_picker",
+        "id": "bg_img",
+        "label": "Background image"
+      },
+ 		  {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+ 		  {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#000000"
+      }
+    ],
+    "blocks":[
+      {
+        "name": "Slide",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text_main",
+            "label": "Main content",
+            "default":"Grazie a una batteria facilmente estraibile, pneumatici più larghi e luce anteriore integrata."
+          },
+          {
+            "type": "text",
+            "id": "text_sub",
+            "label":"Secondary content",
+            "default":"- Largest moto-comtmunity in Italy"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo_image",
+            "label": "Logo image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+        {
+          "name": "Logo slider v2",
+          "category": "Heybike v2"
+        }
+      ]
+  }
+{% endschema %} 

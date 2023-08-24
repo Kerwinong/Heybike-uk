@@ -1,0 +1,136 @@
+{%- assign secSt = section.settings -%}
+
+{% if secSt.bg_img != blank %}
+  <section section-name="image-text" class="{% render 'section-interva-set' , secSt:secSt %}" >
+    <div class="page-width xl:px-4 md:px-8 px-6">
+
+      <div class="md:rounded-section rounded-4xl md:flex overflow-hidden relative md:h-auto h-[92vw]" style="background-color:{{secSt.bg_color}};">
+        <div class="md:w-3/5 md:opacity-100 opacity-40 md:h-auto h-full" >
+          {{ secSt.bg_img | image_url: width: 1920 | image_tag: width: nil, loading: 'lazy',class:'block w-full md:h-auto h-full md:object-fill object-cover object-left' }}
+        </div>
+        <div class="md:w-2/5 flex flex-col justify-center md:mb-8 my-4 text-white md:pl-6 px-4 w-full md:static absolute top-1/3 md:text-left text-center left-1/2 md:translate-x-0 -translate-x-1/2">
+          <h1 class="md:text-4xl text-2_5xl md:mb-5 mb-0">{{ secSt.text_main  }}</h1>
+          <p class="md:text-xl md:mb-8 mb-4">{{ secSt.text_sub  }}</p>
+          <div>
+            <a href="{{ secSt.url }}" class="btn md:btn-contrast btn-vi md:text-base text-sm py-1 px-5">{{ secSt.text_btn  }}</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>  
+{% endif %}
+
+
+
+{% schema %}
+  {
+    "name": "Single image text v2",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Default set"
+      },
+ 		  {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+ 		  {
+        "type": "image_picker",
+        "id": "bg_img",
+        "label": "Left image"
+      },
+ 		  {
+        "type": "text",
+        "id": "text_main",
+        "label": "Title",
+        "default":"Find Dealers Near You"
+      },
+ 		  {
+        "type": "text",
+        "id": "text_sub",
+        "label": "Sub title",
+        "default":"Test Ride & Buy Directly"
+      },
+ 		  {
+        "type": "text",
+        "id": "text_btn",
+        "label": "Button text",
+        "default":"Read More"
+      },
+ 		  {
+        "type": "url",
+        "id": "url",
+        "label": "Button link"
+      }
+    ],
+    "presets": [
+        {
+          "name": "Single image text v2",
+          "category": "Heybike v2"
+        }
+      ]
+  }
+{% endschema %} 

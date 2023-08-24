@@ -1,0 +1,47 @@
+<div id="{{ section.id }}">
+  
+</div>
+<style>
+  #{{ section.id }} { background:{{section.settings.color_bg}}; height:{{section.settings.mdesk}}px; }
+  @media only screen and (min-width:768px) {
+   #{{ section.id }} {height:{{section.settings.sdesk}}px; }
+}
+</style>
+{% schema %}
+  {
+    "name": "Section Extra Space",
+    "settings": [
+	{
+        "type": "range",
+        "id": "sdesk",
+        "label": "Desktop",
+        "default": 30,
+        "min": 1,
+        "max": 100,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "mdesk",
+        "label": "Mobile",
+        "default": 15,
+        "min": 1,
+        "max": 100,
+        "step": 1
+      },
+       {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#fff"
+      }
+    ],
+	 "presets": [
+      {
+        "name": "Section Extra Space",
+        "category": "Other"       
+      }
+    ]
+  }
+{% endschema %}
+

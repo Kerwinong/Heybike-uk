@@ -1,0 +1,363 @@
+{%- assign secSt = section.settings -%}
+
+<section section-name="accordion" class="{% render 'section-interva-set' , secSt:secSt %}" >
+    <div class="page-width xl:px-4 px-6 mx-auto">
+      <ul class="accordion w-full">
+
+      {%- for block in section.blocks -%}
+      {% assign blkSt = block.settings %}
+      {% assign forFirsrt = forloop.first %}
+          <li>
+            <div tag-name='accordion-header' class="flex flex-row border-solid border-0 border-b border-black-700 cursor-pointer justify-between items-center">
+                <p class="md:text-2xl text-1_5xl font-semibold md:my-6 my-3">{{ blkSt.title }}</p>
+                <div tag-name='accordion-arrow' class="overflow-hidden text-white relative">
+                  <i class="{%- unless forFirsrt -%}at-plus-r {% endunless %}at at-minus-r bg-black-800 md:text-lg text-base md:!leading-[95%] !leading-[87%] md:p-2 p-1 rounded-full transition-all"></i> 
+                </div>
+            </div>
+
+
+            <div tag-name='accordion-content' class="{%- unless forFirsrt -%}hidden{% endunless %} md:text-lg text-base md:mt-8 mt-6">
+            {%- case block.type -%}
+              {%- when "objList" -%}
+                  <div class="flex flex-wrap">
+                  {% assign objArr = blkSt.content | split: '<br>'  %}
+                    {% for obj in objArr %}
+                      {% assign title = obj | split: ':' | first  %}
+                      {% assign content = obj | split: ':' | last  %}
+                      {% if blkSt.slide_w == "25%" %} {% assign wClass = "md:w-1/4 w-1/2 md:pr-0 pr-2" %} {% else %} {% assign wClass = "w-full" %} {% endif %}
+                      <div class="{{ wClass }} md:mb-8 mb-6 ">
+                        <p class="m-0 font-semibold md:text-base text-lg leading-tight md:mb-0 mb-1">{{ title }}</p>
+                        <p class="m-0 md:text-base text-sm">{{content | newline_to_br }}</p>
+                      </div>
+                    {% endfor %}
+                  </div>
+
+              {%- when "image" -%}
+                  <div>
+                    {{ blkSt.url_pc | image_url: width: 1480 | image_tag: height: blkSt.url_pc.height, class: "w-full md:block hidden lazyload h-auto", loading: 'lazy' }}
+                    {{ blkSt.url_mb | image_url: width: 980 | image_tag: height: blkSt.url_mb.height, class: "w-full md:hidden block h-auto", loading: 'lazy' }}
+                  </div>
+
+              {%- when "imageGrid" -%}
+              {% assign divClass1 = "flex flex-wrap font-semibold md:mb-12 md:mb-8 mb-6 md:pt-0 pt-10 relative" %}
+              {% assign divClass2 = "xl:w-1/7 lg:w-1/5 md:w-1/3 w-1/2 mb-4" %}
+              {% assign tHClass2 = "md:static absolute top-0 text-lg" %}
+              {% assign divClass3 = "mx-2 rounded overflow-hidden shadow h-full" %}
+              {% assign pClass = "md:text-base text-sm leading-tight p-2 pb-0 mb-2" %}
+              {% assign imgClass = "block max-h-36 mx-auto" %}
+                  {%- if product.metafields.custom[blkSt.metafield1] != blank -%}
+                  <div class="{{ divClass1 }}">
+                    <div class="{{ divClass2 }} {{ tHClass2 }}">{{ blkSt.text1 }}</div>
+                    {% for image in product.metafields.custom[blkSt.metafield1].value %}
+                      <div class="{{ divClass2 }}">
+                        <div class="{{ divClass3 }}">
+                          <p class="{{ pClass }}"> {{image.alt}}</p>
+                          {{ image | image_url: width:200 | image_tag: height:image.height, class:imgClass, loading: 'lazy'}}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {%- endif -%}
+                  {%- if product.metafields.custom[blkSt.metafield2] != blank -%}
+                  <div class="{{ divClass1 }}">
+                    <div class="{{ divClass2 }} {{ tHClass2 }}">{{ blkSt.text2 }}</div>
+                    {% for image in product.metafields.custom[blkSt.metafield2].value %}
+                      <div class="{{ divClass2 }}">
+                        <div class="{{ divClass3 }}">
+                          <p class="{{ pClass }}"> {{image.alt}}</p>
+                          {{ image | image_url: width:200 | image_tag: height:image.height, class:imgClass, loading: 'lazy'}}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {%- endif -%}
+                  {%- if product.metafields.custom[blkSt.metafield3] != blank -%}
+                  <div class="{{ divClass1 }}">
+                    <div class="{{ divClass2 }} {{ tHClass2 }}">{{ blkSt.text3 }}</div>
+                    {% for image in product.metafields.custom[blkSt.metafield3].value %}
+                      <div class="{{ divClass2 }}">
+                        <div class="{{ divClass3 }}">
+                          <p class="{{ pClass }}"> {{image.alt}}</p>
+                          {{ image | image_url: width:200 | image_tag: height:image.height, class:imgClass, loading: 'lazy'}}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {%- endif -%}
+
+
+              {%- when "imgTxtList" -%}
+              {% assign tClass = 'text-sm font-medium text-gray-900 px-4 py-2' %}
+              
+              {% if blkSt.image != blank %}
+              <div class="flex md:flex-row flex-col justify-between">
+              {% assign thArr = blkSt.th | split: ','  %}
+              
+                <table class=" order-2 md:w-[{{ thArr.size | times: 10 }}%] md:mr-8 md:ml-0 -ml-4 w-[100vw]">
+                  <thead class="bg-white border-b text-base">
+                    <tr>
+                      {% for thTxt in thArr %}
+                        <th class="px-4 py-2"> {{thTxt}} </th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% comment %} todo为什么0号位是B {% endcomment %}
+                  {% assign AtoZArr = 'A A B C D E F G H I J K L M N O P Q R S T' | split : ' ' %}
+                  {% assign tdArr = blkSt.td | split: '<br>'  %}
+                  {% for tds in tdArr %}
+                  {% assign mod = forloop.index | modulo: 2 %}
+                    {% if mod == 0 %}
+                      {% assign trClass = 'bg-gray-100 border-b' %}
+                    {% else %}
+                      {% assign trClass = 'bg-white border-b' %}
+                    {% endif %}
+
+                    <tr class="{{trClass}}">
+                      <td class="{{tClass}} text-center font-bold">
+                      <span class="rounded-full bg-black-900 text-white h-6 w-6 leading-6 inline-block">{{ AtoZArr[forloop.index] }}</span></td>
+                      {% assign td = tds | split: '-'  %}
+                      {% for item in td %}
+                        <td class="{{tClass}}">{{item}}</td>
+                      {% endfor %}
+                    </tr>
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <div class="md:w-1/2 md:order-2">
+                  {{ blkSt.image | image_url: width: 1000 | image_tag: width: blkSt.image.width,  loading: 'lazy',class: 'auto' }}
+                </div> 
+              </div>
+              {% endif %}
+            
+            {%- endcase -%}
+            </div>
+
+
+          </li>
+
+      {%- endfor -%} 
+
+
+
+
+      </ul>
+    </div>
+</section> 
+
+
+{% schema %}
+  {
+    "name": "Accordion v2",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      }
+    ],
+    "blocks":[
+      {
+        "name": "Specification list",
+        "type": "objList",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Drop down header",
+            "default":"Electronics"
+          },
+          {
+            "type": "select",
+            "id": "slide_w",
+            "label": "Slide width",
+            "default": "25%",
+            "options": [
+              {
+                "value": "25%",
+                "label": "25%"
+              },
+              {
+                "value": "full",
+                "label": "100%"
+              }
+            ]
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label":"Content",
+            "info":"格式:[标题:内容<br>标题2:内容2<br>标题3:内容3]",
+            "default":"Title:content<br>Title2:content2<br>Title3:content3"
+          }
+        ]
+      },
+      {
+        "name": "Pure image",
+        "type": "image",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Drop down header",
+            "default":"Electronics"
+          },
+          {
+            "type": "image_picker",
+            "id": "url_pc",
+            "label":"Image on pc"
+          },
+          {
+            "type": "image_picker",
+            "id": "url_mb",
+            "label":"Image on mobile"
+          }
+        ]
+      },
+      {
+        "name": "Image grid",
+        "type": "imageGrid",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Drop down header",
+            "default":"Electronics"
+          },
+          {
+            "type": "header",
+            "content": "============"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label":"List-1 title"
+          },
+          {
+            "type": "text",
+            "id": "metafield1",
+            "label":"List-1 Metafield handle"
+          },
+          {
+            "type": "text",
+            "id": "text2",
+            "label":"List-2 title"
+          },
+          {
+            "type": "text",
+            "id": "metafield2",
+            "label":"List-2 Metafield handle"
+          },
+          {
+            "type": "text",
+            "id": "text3",
+            "label":"List-3 title"
+          },
+          {
+            "type": "text",
+            "id": "metafield3",
+            "label":"List-3 Metafield handle"
+          }
+        ]
+      },
+      {
+        "name": "Image text list",
+        "type": "imgTxtList",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Drop down header",
+            "default":"Geometry"
+          },
+          {
+            "type": "header",
+            "content": "============"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image on the right"
+          },
+          {
+            "type": "textarea",
+            "id": "th",
+            "label": "Table header",
+            "default":" ,SIZE(mm),S,M,L"
+          },
+          {
+            "type": "textarea",
+            "id": "td",
+            "label":"Content",
+            "info":"格式:[2排2列内容-2排3列内容-...-2排n列内容<br>[3排2列内容-3排3列内容-...-3排n列内容]",
+            "default":"Total Length-69-72-74<br>Seat tube angle-73-84-95"
+          }
+        ]
+      }
+    ],
+    "presets": [
+        {
+          "name": "Accordion v2",
+          "category": "Heybike v2"
+        }
+      ]
+  }
+{% endschema %}  

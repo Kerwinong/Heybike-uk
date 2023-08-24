@@ -1,0 +1,22 @@
+{% comment %} todo 可配置 {% endcomment %}
+{%- capture productTabs -%}
+  <div section-name="product-tabs-nav" class="bg-black-800 z-50 w-full top-0">
+      <div class="page-width xl:px-4 md:px-8 px-6 mx-auto items-center relative">
+        <div class="flex justify-between text-white">
+          <div tag-name="product-dropdown" class="mb-0 text-lg font-semibold py-3 items-center flex md:cursor-default cursor-pointer">
+            {{ product.title }}<i class="at at-angle-down-l md:hidden block text-lg ml-2 transition-all"></i>
+          </div>
+          <div tag-name="tabs-wrapper" 
+          class="md:flex hidden text-base font-semibold items-center md:static absolute left-0 top-13 md:bg-transparent bg-black-700 md:w-auto w-full border-solid border-white border-0 md:border-t-0 border-t">
+          {% assign pClass = 'mb-0 md:mx-6 mx-4 md:py-3 h-full text-black-500 md:flex inline-block items-center md:py-0 py-2' %}
+            <a href="#{{sets.anchor_href1}}" class="{{ pClass }} active">{{ sets.anchor1 }}</a>
+            <a href="#{{sets.anchor_href2}}" class="{{ pClass }}">{{ sets.anchor2 }}</a>
+            <a href="#{{sets.anchor_href3}}" class="{{ pClass }}">{{ sets.anchor3 }}</a>
+          </div>
+          <div class="md:text-base text-[.925rem] py-3"> <a class="btn-vi text-white font-semibold md:py-2 py-1 px-6 block cursor-pointer" tag-name="atc-btn">{{ 'products.product.add_to_cart' | t }}</a></div>
+        </div>
+      </div>
+  </div>
+{%- endcapture -%}
+
+{{ productTabs | strip_newlines | remove: "  " | remove: "	" }}

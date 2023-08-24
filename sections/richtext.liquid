@@ -1,0 +1,348 @@
+{%- assign secSt = section.settings -%}
+<div class="content-indent {{ secSt.top-offeset}}">   
+ {% if secSt.section_cov %}<div class="section-cover" style="background-color:{{secSt.sec_bg_clr}};">{% endif%} 
+  <div class="richtxt id-{{section.id}} wow fadeIn">  		      
+    <div class="{% if secSt.fullwidth %}fullwidth{% else %}page-width{%endif%}">
+      {% if secSt.image != blank %}        
+      	{%- assign img_url = secSt.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <p class="{{secSt.txt_align}}"><img class="lazyload" src="{{ secSt.image | img_url: '50x' }}" width="{{secSt.image.width}}" data-src="{{ img_url }}" data-widths="[180, 360, 540, 720, 900]"
+                  data-aspectratio="{{ secSt.image.aspect_ratio }}" data-sizes="auto" alt="{{ secSt.image.alt | escape }}"></p>
+      {%- endif -%}
+
+      <div class="page-width {{secSt.txt_align}}" style="max-width:{{secSt.max-width}}px;">                   
+          {% if secSt.title != blank %}<h2 class="ttlTxt" style="--tcl:{{secSt.tcl}};--tfs:{{secSt.tfs}}px;--tfsm:{{secSt.tfsm | divided_by: 100.0 }}rem;--tff:var(--{{secSt.tff}});--tfw:{{secSt.tfw}};--tlh:{{secSt.tlh}}">{{ secSt.title}}</h2>{% endif %}
+          {% if secSt.richtxt != blank %}<div class="rgTxt mb20" style="--cl:{{secSt.cl}};--fs:{{secSt.fs}}px;--fsm:{{secSt.fsm | divided_by: 100.0 }}rem;--lh:{{secSt.lh}}">{{ secSt.richtxt }}</div>{% endif %}
+    
+        {% if secSt.btntxt and secSt.btnurl != blank %}                             
+            <a class="btn {{secSt.btn-size-mob}} {{secSt.btn-size-desk}} {{secSt.btn-style}}" href="{{secSt.btnurl}}">{{ secSt.btntxt }}</a>
+        {% endif %}
+        {% if secSt.btntxt1 and secSt.btnurl1 != blank %}                             
+            <a class="btn {{secSt.btn-size-mob}} {{secSt.btn-size-desk}} {{secSt.btn-style2}}" href="{{secSt.btnurl1}}">{{ secSt.btntxt1 }}</a>
+        {% endif %}
+
+      </div>
+    </div> 
+  </div>
+ {% if secSt.section_cov %}</div> {% endif%}   
+</div>   
+{% schema %}
+  {
+    "name": "Rich Text Block",   
+	"settings":[	
+	 {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+        },	
+       {
+         "type": "checkbox",
+		 "id": "fullwidth",
+		 "label": "Fullwidth?",
+		 "default": true
+       },
+       	 {
+            "type": "checkbox",
+            "id": "section_cov",
+            "label": "Add Background?",
+            "default": false
+          },
+		{
+            "type": "color",
+            "id": "sec_bg_clr",
+            "label": "Background Color",
+			"default":"#fafafa"	
+		 },
+      	{
+              "type": "range",
+              "id": "max-width",
+              "label": "Content Width for Desktop",
+              "default":700,
+              "min": 500,
+              "max": 1200,
+              "step": 10,
+              "unit": "px"
+        },
+		{
+            "type": "image_picker",
+            "id": "image",
+            "label": "Upload Image"
+          },
+		{
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+		"default": "I AM RICH TEXT BLOCK"		
+        },
+		{
+            "type": "color",
+            "id": "tcl",
+            "label": "Color",
+			"default":"#000"	
+		},
+        {
+            "type": "range",
+            "id": "tfs",
+            "label": "Font Size",
+            "default":26,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "tff",
+            "label": "Font Family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "tfw",
+            "label": "Font Weight",
+            "default": "700",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "tlh",
+            "label": "Line Height",
+            "default": 1.2,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        },
+		{
+        "type": "richtext",
+        "id": "richtxt",
+        "label": "Detail Text",
+		"default": "<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>"		
+        },
+		{
+            "type": "color",
+            "id": "cl",
+            "label": "Color",
+			"default":"#000"	
+		 },
+      {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 14,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "lh",
+            "label": "Line Height",
+            "default": 1.6,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        },
+	    {
+            "type": "text",
+            "id": "btntxt",
+            "label": "Button Text",
+            "default": "Read More"
+          },
+		  {
+            "type": "url",
+            "id": "btnurl",
+            "label": "URL", 
+			"default": "/"
+          },
+	   {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Select Button",
+            "default": "btn",
+            "options": [
+              {
+              "label": "Solid Button 1",
+              "value": "btn"
+              },
+              {
+              "label": "Solid Button 2",
+              "value": "btn2"
+              },
+              {
+              "label": "Solid Button 3",
+              "value": "btn3"
+              },
+              {
+              "label": "Border Button 1",
+              "value": "bdr-btn1"
+              },
+              {
+              "label": "Border Button 2",
+              "value": "bdr-btn2"
+              } 
+            ]
+        },
+		  {
+            "type": "text",
+            "id": "btntxt1",
+            "label": "Button Text 2"
+            
+          },
+		  {
+            "type": "url",
+            "id": "btnurl1",
+            "label": "URL"
+			
+          },
+		 {
+            "type": "select",
+            "id": "btn-style2",
+            "label": "Select Button",
+            "default": "btn",
+            "options": [
+              {
+              "label": "Solid Button 1",
+              "value": "btn"
+              },
+              {
+              "label": "Solid Button 2",
+              "value": "btn2"
+              },
+              {
+              "label": "Solid Button 3",
+              "value": "btn3"
+              },
+              {
+              "label": "Border Button 1",
+              "value": "bdr-btn1"
+              },
+              {
+              "label": "Border Button 2",
+              "value": "bdr-btn2"
+              } 
+            ]
+        },
+		 {
+          "type": "select",
+          "id": "btn-size-desk",
+          "label": "Button Size: Desktop",
+          "default": "btn-md",
+          "options": [
+          {
+          "label": "Small",
+          "value": "btn-sm"
+          },
+          {
+          "label": "Medium",
+          "value": "btn-md"
+          },
+          {
+          "label": "Large",
+          "value": "btn-lg"
+          }	
+          ]
+          }, 
+          {
+          "type": "select",
+          "id": "btn-size-mob",
+          "label": "Button Size : Mobile",
+          "default": "mob-btn-sm",
+          "options": [
+          {
+          "label": "Small",
+          "value": "mob-btn-sm"
+          },
+          {
+          "label": "Medium",
+          "value": "mob-btn-md"
+          },
+          {
+          "label": "Large",
+          "value": "mob-btn-lg"
+          }	
+          ]
+          },      	
+		{
+        "type": "select",
+        "id": "txt_align",
+        "label": "Text Alignment",
+        "default": "tc",
+        "options": [
+          {
+            "value": "tl",
+            "label": "Left"
+          },
+          {
+            "value": "tc",
+            "label": "Center"
+          }
+        ]
+      },   
+		{
+            "type": "color",
+            "id": "text_clr",
+            "label": "Text Color",
+			"default":"#111"	
+		 }
+		
+	],
+	"presets": [
+      {
+		 "name": "Rich Text Block"         
+	 }
+   ]
+  }
+{% endschema %}
+

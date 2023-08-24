@@ -1,0 +1,278 @@
+{%- assign secSt = section.settings -%}
+<div class="content-indent {{ section.settings.top-offeset}}">   
+  {% if section.settings.section_cov %}<div class="section-cover" style="background-color:{{section.settings.sec_bg_clr}};">{% endif%} 
+  <div class="page-width" style="max-width:{{section.settings.max-width}}px;">
+	{% render 'sec-title' %}
+    <div class="faq-{{section.settings.pagestyle}}">
+      <div id="{{section.id}}" class="faqList" style="--tcl:{{secSt.tcl}};--tfs:{{secSt.tfs}}px;--tfsm:{{secSt.tfsm | divided_by: 100.0 }}rem;--tff:var(--{{secSt.tff}});--tfw:{{secSt.tfw}};--tbg:{{secSt.tbg}};
+            --qcl:{{secSt.qcl}};--qfs:{{secSt.qfs}}px;--qfsm:{{secSt.qfsm | divided_by: 100.0 }}rem;--qfw:{{secSt.qfw}};">
+        {% for block in section.blocks limit: section.blocks.size%}                 
+			{% if block.type == 'faqsection' and block.settings.sectiontitle != blank %}<h3 class="ttlTxt">{{block.settings.sectiontitle}}</h3>{% endif %}
+			{% if block.type == 'faqs' %}
+			<{% if section.settings.pagestyle == 'style1' %}details{% else %}div{% endif %} class="faq-body">
+			  <summary class="panel-title fl f-jcsb j-aic">{{ block.settings.question}}{% if section.settings.pagestyle =='style1' %}<i class="at at-plus-l"></i>{% endif %}</summary>
+			  <div id="{{ block.id }}" class="panel-content">{{ block.settings.answer}}</div>
+			</{% if section.settings.pagestyle == 'style1' %}details{% else %}div{% endif %}>
+			{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% if section.settings.section_cov %}</div> {% endif%}  
+</div>
+
+{% schema %}
+{
+	"name": "FAQ Page",
+	"settings": [
+	  {
+		"type": "text",
+		"id": "title",
+		"label": "Heading",
+		"default": "FAQs"
+	  },
+	  {
+		"type": "text",
+		"id": "subtitle",
+		"label": "Sub Heading"
+	  },
+	  {
+		"type": "select",
+		"id": "top-offeset",
+		"label": "Top OffSet",
+		"default": "default",
+		"options": [
+		  {
+			"value": "default",
+			"label": "Default"
+		  },
+		  {
+			"value": "small",
+			"label": "Small"
+		  },
+		  {
+			"value": "none",
+			"label": "None"
+		  }
+		]
+	  },
+	  {
+		"type": "checkbox",
+		"id": "section_cov",
+		"label": "Add Background?",
+		"default": true
+	  },
+	  {
+		"type": "color",
+		"id": "sec_bg_clr",
+		"label": "Background Color",
+		"default": "#fafafa"
+	  },
+	  {
+		"type": "select",
+		"id": "pagestyle",
+		"label": "FAQs Style",
+		"default": "style1",
+		"options": [
+		  {
+			"value": "style1",
+			"label": "Style 1"
+		  },
+		  {
+			"value": "style2",
+			"label": "Style 2"
+		  }
+		]
+	  },
+	  {
+		"type": "range",
+		"id": "max-width",
+		"label": "Max Width(Desktop)",
+		"default": 800,
+		"min": 600,
+		"max": 1200,
+		"step": 100
+	  },
+	  {
+		"type": "paragraph",
+		"content": "Block Title ====="
+	  },
+	  {
+		"type": "color",
+		"id": "tcl",
+		"label": "Text",
+		"default": "#eee"
+	  },
+	  {
+		"type": "color",
+		"id": "tbg",
+		"label": "Background",
+		"default": "#333"
+	  },
+	  {
+		"type": "range",
+		"id": "tfs",
+		"label": "Font Size",
+		"default": 24,
+		"min": 10,
+		"max": 100,
+		"step": 1,
+		"unit": "px"
+	  },
+	  {
+		"type": "select",
+		"id": "tff",
+		"label": "Font Family",
+		"default": "ft2",
+		"options": [
+		  {
+			"value": "ft1",
+			"label": "Font 1"
+		  },
+		  {
+			"value": "ft2",
+			"label": "Font 2"
+		  },
+		  {
+			"value": "ft3",
+			"label": "Font 3"
+		  }
+		]
+	  },
+	  {
+		"type": "select",
+		"id": "tfw",
+		"label": "Font Weight",
+		"default": "600",
+		"options": [
+		  {
+			"value": "300",
+			"label": "Light"
+		  },
+		  {
+			"value": "400",
+			"label": "Regular"
+		  },
+		  {
+			"value": "500",
+			"label": "Medium"
+		  },
+		  {
+			"value": "600",
+			"label": "Semi Bold"
+		  },
+		  {
+			"value": "700",
+			"label": "Bold"
+		  }
+		]
+	  },
+	  {
+		"type": "paragraph",
+		"content": "Question ====="
+	  },
+	  {
+		"type": "color",
+		"id": "qcl",
+		"label": "text",
+		"default": "#333"
+	  },
+	  {
+		"type": "range",
+		"id": "qfs",
+		"label": "Font Size",
+		"default": 16,
+		"min": 10,
+		"max": 100,
+		"step": 1,
+		"unit": "px"
+	  },
+	  {
+		"type": "range",
+		"id": "qfsm",
+		"label": "Font Size (mobile)",
+		"default": 8,
+		"min": 0,
+		"max": 400,
+		"step": 4,
+		"unit": "%"
+	  },
+	  {
+		"type": "select",
+		"id": "qfw",
+		"label": "Font Weight",
+		"default": "400",
+		"options": [
+		  {
+			"value": "300",
+			"label": "Light"
+		  },
+		  {
+			"value": "400",
+			"label": "Regular"
+		  },
+		  {
+			"value": "500",
+			"label": "Medium"
+		  },
+		  {
+			"value": "600",
+			"label": "Semi Bold"
+		  },
+		  {
+			"value": "700",
+			"label": "Bold"
+		  }
+		]
+	  }
+	],
+	"blocks": [
+	  {
+		"type": "faqsection",
+		"name": "Section Title",
+		"settings": [
+		  {
+			"type": "text",
+			"id": "sectiontitle",
+			"label": "Section Title"
+		  }
+		]
+	  },
+	  {
+		"type": "faqs",
+		"name": "FAQs",
+		"settings": [
+		  {
+			"type": "text",
+			"id": "question",
+			"label": "Question",
+			"default": "How can I get assistance if I need it?"
+		  },
+		  {
+			"type": "textarea",
+			"id": "answer",
+			"label": "Answer",
+			"default": "Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+		  }
+		]
+	  }
+	],
+	"presets": [
+	  {
+		"name": "FAQs",
+		"category": "4. Text",
+		"blocks": [
+		  {
+			"type": "faqs"
+		  },
+		  {
+			"type": "faqs"
+		  },
+		  {
+			"type": "faqs"
+		  }
+		]
+	  }
+	]
+  }
+{% endschema %}

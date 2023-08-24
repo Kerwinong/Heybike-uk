@@ -1,0 +1,161 @@
+{%- assign secSt = section.settings -%}
+
+<section section-name="data-statistics" class="{% render 'section-interva-set' , secSt:secSt %}" >
+
+  <div class="page-width xl:px-4 md:px-8 px-6">
+    <div class="md:rounded-section rounded-4xl flex md:flex-row flex-col justify-between overflow-hidden" style="background-color: {{ secSt.bg_color }};">
+      <div class="md:p-12 md:pb-0 px-3 pb-4 md:w-[62%]">
+        <h1 class="xl:text-[2.625rem] md:text-4xl text-2xl md:pt-0 pt-5 md:pb-12 pb-5 border-0 border-b-2 border-solid border-black-300 mb-0 relative
+        after:content-[''] after:h-[2px] after:w-1/4 after:bg-black-900 after:block after:absolute after:-bottom-[2px]">{{ secSt.title }}</h1>
+        <div class="md:mt-12 mt-6 flex flex-wrap">
+          {% for block in section.blocks %}
+          <div class="w-1/2 md:mb-10 mb-5">
+            <div class="flex items-end font-medium">
+              <p class="lg:text-4xl text-1_5xl mb-0">{{block.settings.text_main}}</p>
+              <p class="md:text-[1.25rem] text-sm md:ml-2 ml-1">{{block.settings.text_suf}}</p>
+            </div>
+            <p class="md:text-base text-sm">{{block.settings.text_sub}}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="border-0 md:border-l-[.5rem] md:border-t-0 border-t-[.5rem] border-solid border-white md:w-[38%]">
+        {{ secSt.image | image_url: width: 1280 | image_tag: height: secSt.image.height, class: 'h-full object-cover md:block hidden w-full' }}
+        {% if secSt.image_mb != blank %}
+        {{ secSt.image_mb | image_url: width: 1280 | image_tag: height: secSt.image_mb.height, class: 'h-full object-cover md:hidden block w-full' }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</section>  
+
+{% schema %}
+  {
+    "name": "Data statistics v2",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "none",
+        "options": [
+          {
+            "value": "extraLarge",
+            "label": "Extra Large"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "extraLarge",
+            "label": "Extra Large"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Default set"
+      },
+ 		  {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+ 		  {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+ 		  {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Right image"
+      },
+ 		  {
+        "type": "image_picker",
+        "id": "image_mb",
+        "label": "Right image(mobile)"
+      }
+    ],
+    "blocks":[
+      {
+        "name": "Slide",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text_main",
+            "label": "Main content"
+          },
+          {
+            "type": "text",
+            "id": "text_suf",
+            "label": "suffix \ Unit"
+          },
+          {
+            "type": "text",
+            "id": "text_sub",
+            "label":"Secondary content"
+          }
+        ]
+      }
+    ],
+    "presets": [
+        {
+          "name": "Data statistics v2",
+          "category": "Heybike v2"
+        }
+      ]
+  }
+{% endschema %} 

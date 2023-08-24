@@ -1,0 +1,309 @@
+{%- assign secSt = section.settings -%}
+
+{% if secSt.enable_slider %} {% assign ebSlider = true %} {% else %} {% assign ebSlider = false %} {% endif %}
+
+<section section-name="multiple-image-text" class="{% render 'section-interva-set', secSt:secSt %}" >
+
+
+  <div class="page-width md:px-4 px-6 {% if ebSlider %}md:px-4 !px-0{% else %}px-4{% endif %}">
+    <h1 class="md:text-4_5xl text-3xl text-center md:mb-12 mb-8">{{secSt.title}}</h1>
+
+    <div {% if ebSlider %}tag-name='multiple-flickity' data-flickity='{"pageDots": false, "draggable": true, "imagesLoaded": true,"wrapAround":true }' {% else %} class="md:flex"{% endif %} >
+      {% for block in section.blocks %}
+      {%- assign blkSt = block.settings -%}
+      
+      {% if blkSt.bg_img != blank or blkSt.video_url != blank %}
+
+      {% if secSt.layout == 'textImg' %}{% assign textImg = true %} {% else %} {% assign textImg = false %} {% endif %}
+      {% if forloop.length < 3 %} {% assign rounded = 'md:rounded-section' %} {% else %} {% assign rounded = '' %} {% endif %}
+
+      <div class="z-20 md:{{ blkSt.slide_w }} {% if ebSlider %}w-4/5{% endif %} {% unless ebSlider %}md:mx-3 last:mr-0 first:ml-0 {% endunless %}
+       {% if textImg or ebSlider %}flex{% endif %} flex-col md:m-0 mb-8 relative">  
+        <div class="{{ rounded }} rounded-3xl overflow-hidden {% if textImg or ebSlider %}h-full{% endif %} {% if ebSlider %}mx-2{% endif %} {% unless textImg %}md:mb-6{% endunless %} mb-2"
+          style="background-color:{{blkSt.bg_color}};">
+
+        {% case block.type %} 
+          {% when "image" %}
+            {% assign imgClass = 'object-cover block w-full h-auto' %}
+            {% if blkSt.img_link != blank %} 
+            {% assign imgClass = 'object-cover block w-full enlarge h-auto' %}
+            <a href="{{ blkSt.img_link }}" > 
+            {% endif %}
+            {% assign sectionClass = "" %}
+            {% if blkSt.bg_img_mb != blank %}
+            {% assign sectionClass = "md:block hidden" %}
+            <section class="md:hidden block"> 
+            {{ blkSt.bg_img_mb | image_url: width: 1280 | image_tag: height: blkSt.bg_img_mb.height, class: imgClass, lazyload: true }}
+          </section>
+            {% endif %}
+            <section class="{{ sectionClass }}">
+              {% comment %} {{ blkSt.bg_img | image_url: width: 1280 | image_tag: height: blkSt.bg_img.height, class: imgClass, lazyload: true }} {% endcomment %}
+              {% include 'aspect-ratio-img', class: imgClass, media: blkSt.bg_img, placeholder: true %}
+            </section>
+            {% if blkSt.img_link != blank %} </a> {% endif %}
+          {% else %}
+
+            {% assign grippyClass = "absolute w-[calc(50%_-_50px)] z-[3] left-0 top-8 bottom-10 before:absolute before:block before:content-[''] before:w-3/5 before:h-[35%] before:left-full before:top-0" %}
+            <div class="relative w-full md:h-96 h-64">
+              <iframe class="absolute w-full h-full z-[2] left-0 top-0" src="//www.youtube.com/embed/{{ blkSt.video_url.id }}" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+              <div class="{{ grippyClass }}"></div>
+              <div class="{{ grippyClass }} left-auto right-0 before:left-auto before:right-full before:top-auto before:bottom-0"></div>
+            </div>
+        {% endcase %}
+
+        </div>
+        {% if blkSt.text_main != blank %}
+
+
+          <section class="{% if textImg %}md:absolute md:bottom-6 md:left-6 md:text-white md:w-4/5 md:mx-0 mx-2{% endif %}">
+            {% if blkSt.img_link != blank %} <a href="{{ blkSt.img_link }}" > {% endif %}
+              <h1 class="{% if textImg %}md:text-xl md:mb-1{% else %} md:text-3xl {% endif %}md:mb-2 mb-1 text-xl">{{ blkSt.text_main }}</h1>
+              <p class="{% if textImg %}md:text-base{% else %}md:text-lg{% endif %} break-words">{{ blkSt.text_sub }}</p>
+            {% if blkSt.img_link != blank %} </a> {% endif %}
+          </section>
+        {% endif %}
+
+      </div>
+      {% endif %}
+
+      {% endfor %}
+    </div>
+
+    {% if secSt.bottom_line %}
+      <hr class="h-px my-8 bg-gray-200 border-0">
+    {% endif %}
+
+
+    {% if ebSlider %}
+      <div class="progress-bar h-1 bg-vi w-0"></div>
+    {% endif %}
+
+
+  </div>
+
+
+</section>  
+
+<script>
+
+</script>
+
+{% schema %}
+  {
+    "name": "Multiple image text v2",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section interval set"
+      },
+      {
+        "type": "select",
+        "id": "top_padding",
+        "label": "top interval",
+        "default": "large",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bottom_padding",
+        "label": "bottom interval",
+        "default": "default",
+        "options": [
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Default set"
+      },
+      {
+        "type":"text",
+        "label": "Section title",
+        "id":"title",
+        "default":"The World of HEYBIKE"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout style",
+        "default": "textImg",
+        "options": [
+          {
+            "value": "textImg",
+            "label": "Text on the picture"
+          },
+          {
+            "value": "imgText",
+            "label": "Text is below the picture"
+          }
+        ]
+      },
+ 		  {
+        "type": "checkbox",
+        "id": "enable_slider",
+        "label": "Enable slider",
+        "default": false
+      },
+ 		  {
+        "type": "checkbox",
+        "id": "bottom_line",
+        "label": "Enable bottom line",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Image slide",
+        "type": "image",
+        "settings": [
+          {
+            "type": "select",
+            "id": "slide_w",
+            "label": "Slide width",
+            "options": [
+              {
+                "value": "w-1/3",
+                "label": "1/3"
+              },
+              {
+                "value": "w-2/3",
+                "label": "2/3"
+              },
+              {
+                "value": "w-full",
+                "label": "full"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_img",
+            "label": "Slide image"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_img_mb",
+            "label": "Slide image (mobile)"
+          },
+          {
+            "type": "text",
+            "id": "text_main",
+            "label": "Title",
+            "default": "Find Dealers Near You"
+          },
+          {
+            "type": "text",
+            "id": "text_sub",
+            "label": "Sub title",
+            "default": "Test Ride & Buy Directly"
+          },
+          {
+            "type": "url",
+            "id": "img_link",
+            "label": "Link"
+          }
+        ]
+      },
+      {
+        "name": "Video slide",
+        "type": "video",
+        "settings": [
+          {
+            "type": "select",
+            "id": "slide_w",
+            "label": "Slide width",
+            "options": [
+              {
+                "value": "w-1/3",
+                "label": "1/3"
+              },
+              {
+                "value": "w-2/3",
+                "label": "2/3"
+              },
+              {
+                "value": "w-full",
+                "label": "full"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color"
+          },
+          {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Video link",
+          "accept": ["youtube"]
+          },
+          {
+            "type": "text",
+            "id": "text_main",
+            "label": "Title",
+            "default": "Find Dealers Near You"
+          },
+          {
+            "type": "text",
+            "id": "text_sub",
+            "label": "Sub title",
+            "default": "Test Ride & Buy Directly"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Multiple image text v2",
+        "category": "Heybike v2"
+      }
+    ]
+  }
+{% endschema %} 

@@ -1,0 +1,1323 @@
+{%- assign secSt = section.settings -%}
+{%- capture gridBanners -%}
+<div class="content-indent {{ secSt.top-offeset}}"> {% capture imageGallery %}
+  {% capture styles %}
+  --cl:{{secSt.cl}};--fs:{{secSt.fs}}px;--fsm:{{secSt.fsm | divided_by: 100.0 }}rem;--fw:{{secSt.fw}};--lh:{{secSt.lh}};
+  --tcl:{{secSt.cl2}};--tfs:{{secSt.tfs}}px;--tfsm:{{secSt.tfsm | divided_by: 100.0 }}rem;--tfw:{{secSt.tfw}};--tlh:{{secSt.tlh}};
+  {% if secSt.isbox %}
+  --bg:{{secSt.bg | color_modify:'alpha',secSt.opt}};--bdr:{{secSt.bdr}}px;
+  {% endif %}
+  {% endcapture %}
+  <div class="imgBnrOuter{% if secSt.hide_mobile %} hide-sm{% endif %} sec-{{section.id}}">
+    <div class="{% if secSt.fullwidth %}fullwidth{% else %}page-width{%endif%}"style="{{styles}}"> {% render 'sec-title' %}
+      
+      {% if secSt.snow_effect %}
+      <div class="falling-snow{% if secSt.snow_style == "style2" %} style2{% else %} style1{% endif %}">
+      {% endif %}
+      
+      
+      {%- for block in section.blocks -%}
+      {%- assign blkSt = block.settings -%}
+      {%- if block.type == 'style1' -%}
+      <div class="grid-bnr st1{% unless secSt.disable_zoom %} zoom_hov{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image1, title:blkSt.text1, subtitle:blkSt.text1-large, link:blkSt.link1, talign:blkSt.bnr1align, isBox:secSt.isbox, imgSize:'930x620' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="50ms"> {% render 'image-grid',image:blkSt.image2, title:blkSt.text2, subtitle:blkSt.text2-large, link: blkSt.link2, talign:blkSt.bnr2align, isBox:secSt.isbox, imgSize:'460x300' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="100ms"> {% render 'image-grid',image:blkSt.image3, title:blkSt.text3, subtitle:blkSt.text3-large, link: blkSt.link3, talign:blkSt.bnr3align, isBox:secSt.isbox, imgSize:'460x300' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="150ms"> {% render 'image-grid',image:blkSt.image4, title:blkSt.text4, subtitle:blkSt.text4-large, link: blkSt.link4, talign:blkSt.bnr4align, isBox:secSt.isbox, imgSize:'930x300' %} </div>
+      </div>
+      {%- elsif block.type == 'style2' -%}
+      <div class="grid-bnr st2{% unless secSt.disable_zoom %} zoom_hov{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image1, title:blkSt.text1, subtitle:blkSt.text1-large, link: blkSt.link1, talign:blkSt.bnr1align, isBox:secSt.isbox, imgSize:'460x460' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="50ms"> {% render 'image-grid',image:blkSt.image2, title:blkSt.text2, subtitle:blkSt.text2-large, link: blkSt.link2, talign:blkSt.bnr2align, isBox:secSt.isbox, imgSize:'460x460' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="100ms"> {% render 'image-grid',image:blkSt.image3, title:blkSt.text3, subtitle:blkSt.text3-large, link: blkSt.link3, talign:blkSt.bnr3align, isBox:secSt.isbox, imgSize:'930x930' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="150ms"> {% render 'image-grid',image:blkSt.image4, title:blkSt.text4, subtitle:blkSt.text4-large, link: blkSt.link4, talign:blkSt.bnr4align, isBox:secSt.isbox, imgSize:'460x460' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="200ms"> {% render 'image-grid',image:blkSt.image5, title:blkSt.text5, subtitle:blkSt.text5-large, link: blkSt.link5, talign:blkSt.bnr5align, isBox:secSt.isbox, imgSize:'460x460' %} </div>
+      </div>
+      {%- elsif block.type == 'style3' -%}
+      <div class="grid-bnr st3{% unless secSt.disable_zoom %} zoom_hov{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image1, title:blkSt.text1, subtitle:blkSt.text1-large, link: blkSt.link1, talign:blkSt.bnr1align, isBox:secSt.isbox, imgSize:'930x930' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="50ms"> {% render 'image-grid',image:blkSt.image2, title:blkSt.text2, subtitle:blkSt.text2-large, link: blkSt.link2, talign:blkSt.bnr2align, isBox:secSt.isbox, imgSize:'930x455' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="100ms"> {% render 'image-grid',image:blkSt.image3, title:blkSt.text3, subtitle:blkSt.text3-large, link: blkSt.link3, talign:blkSt.bnr3align, isBox:secSt.isbox, imgSize:'930x455' %} </div>
+      </div>
+      {%- elsif block.type == 'style4' -%}
+      <div class="grid-bnr st4{% unless secSt.disable_zoom %} zoom_hov{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image1, title:blkSt.text1, subtitle:blkSt.text1-large, link: blkSt.link1, talign:blkSt.bnr1align, isBox:secSt.isbox, imgSize:'930x700' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image2, title:blkSt.text2, subtitle:blkSt.text2-large, link: blkSt.link2, talign:blkSt.bnr2align, isBox:secSt.isbox, imgSize:'460x718' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image3, title:blkSt.text3, subtitle:blkSt.text3-large, link: blkSt.link3, talign:blkSt.bnr3align, isBox:secSt.isbox, imgSize:'460x342' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image4, title:blkSt.text4, subtitle:blkSt.text4-large, link: blkSt.link4, talign:blkSt.bnr4align, isBox:secSt.isbox, imgSize:'460x342' %} </div>
+      </div>
+      {%- elsif block.type == 'style5' -%}
+      <div class="grid-bnr st5{% unless secSt.disable_zoom %} zoom_hov{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image1, title:blkSt.text1, subtitle:blkSt.text1-large, link: blkSt.link1, talign:blkSt.bnr1align, isBox:secSt.isbox, imgSize:'712x340' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image2, title:blkSt.text2, subtitle:blkSt.text2-large, link: blkSt.link2, talign:blkSt.bnr2align, isBox:secSt.isbox, imgSize:'712x340' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image3, title:blkSt.text3, subtitle:blkSt.text3-large, link: blkSt.link3, talign:blkSt.bnr3align, isBox:secSt.isbox, imgSize:'1068x700' %} </div>
+      </div>
+      {%- elsif block.type == 'style6' -%}
+      <div class="grid-bnr st6{% unless secSt.disable_zoom %} zoom_hov{% endunless %}" {{ block.shopify_attributes }}>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image1, title:blkSt.text1, subtitle:blkSt.text1-large, link: blkSt.link1, talign:blkSt.bnr1align, isBox:secSt.isbox, imgSize:'640x640' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image2, title:blkSt.text2, subtitle:blkSt.text2-large, link: blkSt.link2, talign:blkSt.bnr2align, isBox:secSt.isbox, imgSize:'640x640' %} </div>
+        <div class="imgBnr wow fadeInUp" data-wow-delay="0ms"> {% render 'image-grid',image:blkSt.image3, title:blkSt.text3, subtitle:blkSt.text3-large, link: blkSt.link3, talign:blkSt.bnr3align, isBox:secSt.isbox, imgSize:'640x640' %} </div>
+      </div>
+      {%- endif -%}
+      {%- endfor -%}
+      {%- if section.blocks.size == 0 -%}{% include 'no-blocks' %}{%- endif -%}
+      {% if secSt.snow_effect %}</div>
+    {% endif %} </div>
+</div>
+{% endcapture %}
+  {{imageGallery | strip_newlines | remove: "  " | remove: "	" }}
+  </div>
+{%- endcapture -%}
+{{gridBanners | strip_newlines | remove: "  " | remove: "	" }}
+
+{% schema %}
+  {
+    "name": "Grid Banners",
+    "class": "index-section imgBanners",
+    "settings": [	
+     {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Heading"		
+      }, 		
+     {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Describe your products, collection etc..."
+      },	
+	 {
+		 "type": "paragraph",
+		 "content":"[preview grid style](https://www.adornthemes.com/different-grid-style/)"
+      },  	
+	 {
+		 "type": "paragraph",
+		 "content":"Section==="
+      }, 	 
+	  {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+        }, 
+		 {
+         "type": "checkbox",
+		 "id": "fullwidth",
+		 "label": "Fullwidth?",
+		 "default": false
+      },
+        {
+           "type": "checkbox",
+           "id": "hide_mobile",
+           "label": "Hide Section in Mobile?",
+           "default": false
+        },	 	     
+      {
+		"type":"paragraph",
+		"content":"Text 1 ===="
+	  },
+ 	 {
+        "type": "color",
+        "id": "cl",
+        "label": "Color",
+        "default": "#000"
+      }, 
+      {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 13,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "400",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "lh",
+            "label": "Line Height",
+            "default": 1.2,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        },
+      {
+		"type":"paragraph",
+		"content":"Text 2 ===="
+	  },
+ 	 {
+        "type": "color",
+        "id": "cl2",
+        "label": "Color",
+        "default": "#000"
+      }, 
+      {
+            "type": "range",
+            "id": "tfs",
+            "label": "Font Size",
+            "default": 24,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "tff",
+            "label": "Font Family",
+            "default": "ft2",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "tfw",
+            "label": "Font Weight",
+            "default": "700",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "tlh",
+            "label": "Line Height",
+            "default": 1.2,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1,
+            "info": "Space between text lines. Default is set to 1.3"
+        },
+    {
+		"type":"checkbox",
+		"id":"isbox",
+		"label":"Add Box?",
+		"default": true
+	  },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Box Background",
+        "default": "#fff"
+     },
+	 {
+        "type": "range",
+        "id": "opt",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Background Opacity",
+        "unit": "%",
+        "default": 0.8
+      },
+	 {
+        "type": "range",
+        "id": "bdr",
+        "min": 0,
+        "max":50,
+        "step": 1,
+        "label": "Border Radius",
+        "unit": "px",
+        "default": 7
+      },
+    {
+		"type":"checkbox",
+		"id":"disable_zoom",
+		"label":"Disable Image Hover Zoom Effect?",
+		"default": false
+	  },
+		{
+		"type":"checkbox",
+		"id":"snow_effect",
+		"label":"Enable Snow Effect?",
+		"default": false,
+		"info":"For Christmas"
+	   },
+        {
+          "type": "select",
+          "id": "snow_style",
+          "label": "Snow Style",
+          "default": "style1",         
+          "options": [
+            {
+            "value": "style1",
+            "label": "Falling Down"
+            },
+            {
+            "value": "style2",
+            "label": "Falling From Left"
+            }
+            ]
+          }
+    ],
+    "blocks": [
+      {
+        "type": "style1",
+        "name": "Style 1",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image1",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+	 	  {
+ 			"type":"textarea",
+			"id":"text1-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr1align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image2",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		{
+ 			"type":"textarea",
+			"id":"text2-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr2align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image3",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+	      {
+ 			"type":"textarea",
+			"id":"text3-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr3align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 4"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image4",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text4",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text4-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr4align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link4",
+			"label": "Banner Link"
+          }
+        ]
+      },
+	  {
+        "type": "style2",
+        "name": "Style 2",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image1",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		 {
+ 			"type":"textarea",
+			"id":"text1-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr1align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image2",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr2align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image3",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text3",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr3align",
+           "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 4"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image4",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text4",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text4-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr4align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link4",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 5"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image5",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text5",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text5-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr5align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link5",
+			"label": "Banner Link"
+          }
+        ]
+      },
+	  {
+        "type": "style3",
+        "name": "Style 3",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image1",
+			"label":"Banner Image"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr1align",
+             "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image2",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text2",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr2align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image3",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text3",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr3align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          }
+        ]
+      },
+	  {
+        "type": "style4",
+        "name": "Style 4",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image1",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text1",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr1align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image2",
+			"label":"Banner Image",
+			"info":"For fullwidth section recommaded size is 460x712"
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text2",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr2align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image3",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr3align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 4"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image4",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text4",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text4-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr4align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link4",
+			"label": "Banner Link"
+          }
+        ]
+      },
+	  {
+        "type": "style5",
+        "name": "Style 5",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image1",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text1",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr1align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image2",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text2",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr2align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image3",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text3",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr3align",
+           "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          }
+        ]
+      },
+		  {
+        "type": "style6",
+        "name": "Style 6",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image1",
+			"label":"Banner Image",
+			"info":"image height is flexible"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text1-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr1align",
+             "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image2",
+			"label":"Banner Image",
+			"info":"image height is flexible"
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text2",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text2-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr2align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"image3",
+			"label":"Banner Image",
+			"info":"image height is flexible"
+		  },
+		   {
+ 			"type":"textarea",
+			"id":"text3",
+			"label":"Text 1",
+			"info":"bold text = <strong>"
+		  },
+		  {
+ 			"type":"textarea",
+			"id":"text3-large",
+			"label":"Text 2",
+			"info":"bold text = <strong>"
+		  },
+          {
+            "type": "select",
+            "id": "bnr3align",
+            "label": "Text Position",
+            "default": "f-jcc f-aie tc",
+            "options": [
+              { "label": "Top Left",      "value": "f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "f-jcc f-ais tc" },
+  			  { "label": "Top Right",     "value": "f-jce f-ais tr" },             
+			  { "label": "Left",          "value": "f-aic f-jcs" },
+ 			  { "label": "Center",        "value": "f-jcc f-aic tc" },
+			  { "label": "Right",         "value": "f-jce f-aic tr" },
+ 			  { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "f-jcc f-aie tc" }, 						 
+			  { "label": "Bottom Right",  "value": "f-jce f-aie tr" }
+            ]
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          }
+        ]
+      }
+		
+    ],
+    "presets": [
+      {
+        "name": "Grid Banners"       
+      }
+    ]
+  }
+{% endschema %} 

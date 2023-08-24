@@ -1,0 +1,36 @@
+{% comment %} v1.2所用的字体 {% endcomment %}
+{% style %}
+
+@font-face {
+font-family: 'Product Sans';
+font-style: normal;
+font-weight: 400;
+src: url('{{ 'Product-Sans-Light.woff' | asset_url }}') format('woff');
+}
+@font-face {
+font-family: 'Product Sans';
+font-style: normal;
+font-weight: 500;
+src: url('{{ 'Product-Sans-Regular-2.woff' | asset_url }}') format('woff');
+}
+@font-face {
+font-family: 'Product Sans';
+font-style: normal;
+font-weight: 600;
+src: url('{{ 'Product-Sans-Bold-3.woff' | asset_url }}') format('woff');
+}
+
+@font-face {
+font-family: 'Product Sans';
+font-style: italic;
+font-weight: 500;
+src: url('{{ 'Product-Sans-Italic-4.woff' | asset_url }}') format('woff');
+}
+@font-face {
+font-family: 'Product Sans';
+font-style: italic;
+font-weight: 600;
+src: url('{{ 'Product-Sans-Bold-Italic-5.woff' | asset_url }}') format('woff');
+}
+
+{% endstyle %}

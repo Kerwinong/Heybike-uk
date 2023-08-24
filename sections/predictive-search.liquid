@@ -1,0 +1,18 @@
+{%- if predictive_search.performed -%}
+    <div id="predictive-search-results-list" class="grid rwcols-2 rwcols-md-3 rwcols-lg-4 search-results" role="listbox" aria-labelledby="predictive-search-products">
+      {%- for product in predictive_search.resources.products -%}
+            <a href="{{ product.url }}" class="gitem fl f-aic">
+                <div class="img">
+                    <div class="gitem-img lazyload" data-bgset="{{product.featured_image | img_url: '100x' }}" data-sizes="auto" data-parent-fit="contain"></div>
+                </div>
+                <div class="details tl fl1">
+                    <p class="mb5">{{ product.title | escape }}</p>
+                    {% render 'product-price', product: product %}
+                </div>
+            </a>
+      {%- endfor -%}
+    </div>
+    {%- if predictive_search.resources.products.size == 0 -%}
+      <p class="noResult">{{ 'general.search.no_results_html' | t: terms: predictive_search.terms }}</p>
+    {%- endif -%}
+{%- endif -%}

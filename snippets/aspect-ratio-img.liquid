@@ -1,0 +1,8 @@
+{%- capture productTabs -%}
+{% assign aspectRatio = media.height | times: 100 | divided_by: media.width | divided_by: 1.0 %}
+{% assign imgClass = "absolute left-0 top-0 w-full h-full " | append: class %}
+<div class="{% if placeholder %}imgPlaceholder{% endif %} relative" style="padding-bottom:{{aspectRatio}}%">
+  {{ media | image_url: width: media.width | image_tag: class: imgClass }}
+</div>
+{%- endcapture -%}
+{{ productTabs | strip_newlines | remove: "  " | remove: "	" }}

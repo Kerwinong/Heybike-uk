@@ -1,0 +1,24 @@
+{%- capture productTabs -%}
+<div section-name="product-column-img" class="mt-8 md:mb-0 mb-12 rounded-md overflow-hidden border-solid border border-black-300">
+  <div class="md:py-6 py-5 lg:px-12 md:px-5">
+    <ul class="flex text-sm md:justify-between justify-center">
+    {% assign liClass = 'text-center flex items-center flex-col px-6' %}
+    {% assign spanClass = 'w-11 h-11 flex items-center justify-center rounded-full border-solid border border-black-300 md:mb-2 mb-1' %}
+    
+      <li class="{{liClass}}"> 
+        <span class="{{ spanClass }}"> {{ block.icon1 | image_url: width : "300px" | image_tag: width: nil, class: 'w-3/5' }} </span>
+        <p>{{ block.text1 }}</p>
+      </li>
+      <li class="{{liClass}}">
+        <span class="{{ spanClass }}"> {{ block.icon2 | image_url: width : "300px" | image_tag: width: nil, class: 'w-3/5' }} </span>
+        <p>{{ block.text2 }}</p>
+      </li>
+      <li class="{{liClass}}">
+        <span class="{{ spanClass }}"> {{ block.icon3 | image_url: width : "300px" | image_tag: width: nil, class: 'w-3/5' }} </span>
+        <p>{{ block.text3 }}</p>
+      </li>
+    </ul>
+  </div>
+</div>
+{%- endcapture -%}
+{{ productTabs | strip_newlines | remove: "  " | remove: "	" }}

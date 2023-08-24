@@ -1,0 +1,487 @@
+{%- liquid
+    assign isRtl = false
+    assign lisRtl = 'ar,dv,ha,he,ku,fa,ur,ug' | split: ','
+    if lisRtl contains request.locale.iso_code or settings.rtl
+        assign isRtl = true
+    endif
+   assign secSt = section.settings
+-%}
+{%- capture collectionTabs -%}
+<div class="content-indent {{ secSt.top-offeset}}{% if secSt.section_cov %} section-cover{% endif%}" {% if secSt.section_cov %}style="background-color:{{secSt.sec_bg_clr}};"{% endif%}>
+  <div class="{% unless secSt.section_width %}page-width{% else %}fullwidth{% endunless %} collection-tabs-wrapper" id="{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="carousel">
+    
+    {% render 'sec-title' %}
+
+    <div class="tabs-listing wow fadeIn">
+      <ul class="cl-tabs hide-sm {{ settings.title_align}} {{secSt.ff}}" style="--fs:{{secSt.fs}}px;--fw:{{secSt.fw}};--cl:{{secSt.cl}};--bg:{{secSt.bg}};--bd:{{secSt.bd}};--bdr:{{secSt.bdr}}px;--cla:{{secSt.cla}};--bga:{{secSt.bga}};--bda:{{secSt.bda}};">
+        {%- for block in section.blocks limit: section.blocks.size -%}
+			{%- if block.settings.title != blank -%}
+				<li class="st{{ secSt.tab-style}}{% if forloop.first %} active{% endif %}"><a class="tablink" href="#collection-{{ block.id }}">{{ block.settings.title }}</a></li>
+			{%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <div class="tab-container" style="--acfs:{{secSt.fsm | divided_by: 100.0 }}rem;--acfw:{{secSt.fw}};--accl:{{secSt.clm}};--acbg:{{secSt.bgm}};--accla:{{secSt.clma}};--acbga:{{secSt.bgma}};">
+        {% for block in section.blocks limit: section.blocks.size %}
+        {%- assign collection = collections[block.settings.collection] -%}
+        <h3 class="acor-ttl hide-md hide-lg {{secSt.ff}} {{ settings.title_align}} {{ secSt.tab-style}}{% if forloop.first %} active{% endif %}"><a class="tablink" href="#collection-{{ block.id }}">{{ block.settings.title }}<i class="at at-angle-down-r" aria-hidden="true"></i></a></h3>
+        <div id="collection-{{ block.id }}" class="tab-content"{% if forloop.first %} style="display:block"{% endif %}>
+          <div id="productSlider-{{ block.id }}" class="grid rwcols-{{secSt.mobile-grid}} rwcols-md-{{secSt.tablet-grid}} rwcols-lg-{{secSt.grid}} grid-products carousel arwOut" data-flickity='{ "cellAlign":"left","groupCells":true,"wrapAround":true,"pageDots":false,"draggable":true{%- if secSt.autoplay -%},"autoPlay":{{secSt.speed | times: 1000}}{% endif %}{%- if isRtl -%},"rightToLeft": true{%- endif -%} }'>
+            {% for product in collection.products limit: secSt.rows %}
+            	<div class="gitem">{% render 'product-card-grid', product: product, secSt: secSt, sizes: image_size %}</div>
+            {% else %}
+              {% for i in (1..secSt.rows) %}
+				  <div class="gitem">
+					<div class="grid-view-item">
+					  <a href="#" class="gimg-link">
+						<div class="gitem-img">{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}{{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</div>
+						 <div class="details">
+							<div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+							<div class="grid-view-item__meta"> {% render 'product-price' %} </div>
+						 </div>
+					  </a>
+					</div>
+				  </div>
+			  {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>   
+  </div>
+</div>
+{%- endcapture -%}
+{{collectionTabs | strip_newlines | remove: "  " | remove: "	" }}
+
+{% schema %}
+  {
+    "name": "Tabs + Products Slider",
+    "class": "index-section",
+    "max_blocks": 8,
+    "settings": [	  
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Our Collection"		
+      },	  
+ 	 {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Describe your products, collection etc..."
+      },
+      {
+        "type": "paragraph",      
+        "content": "Section==="
+      },	 
+	  {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+        }, 
+         {
+		"type":"checkbox",
+		"id":"section_width",
+		"label":"Fullwidth?",
+		"default": false
+	   },
+	 {
+        "type": "checkbox",
+        "id": "section_cov",
+        "label": "Add Background?",
+        "default": false
+      },
+	  {
+        "type": "color",
+        "id": "sec_bg_clr",
+        "label": "Background",
+		"default":"#fafafa",
+		"info":"select light color"
+	  },	   
+	  {
+        "type": "paragraph",
+        "content": "Grid ==="
+      },
+	  {
+        "type": "select",
+        "id": "prbox_style",
+        "label": "Select Style",
+        "default": "style1",
+        "options": [
+          {
+            "value": "style1",
+            "label": "Style 1 - Default Info Center"
+          },
+          {
+            "value": "style2",
+            "label": "Style 2 - Info Hover Image"
+          },
+          {
+            "value": "style3",
+            "label": "Style 3 - Info Below Image"
+          },
+          {
+            "value": "style4",
+            "label": "Style 4 - Default Info Left"
+          },
+ 		  {
+            "value": "style5",
+            "label": "Style 5 - Display Text Button"
+          }
+        ],
+		"info":"[chekout grid style](https://avon-demo.myshopify.com/pages/grid-style)"      
+      },
+      {
+        "type": "paragraph",
+        "content": "Products Per Row ==="
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Desktop",
+        "default": 4,
+        "min": 2,
+        "max": 7,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "tablet-grid",
+        "label": "Tablet",
+        "default": 3,
+        "min": 1,
+        "max": 5,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "mobile-grid",
+        "label": "Mobile",
+        "default": 2,
+        "min": 1,
+        "max": 3,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "rows",
+        "label": "Number of Product to show",
+        "default":5,
+        "min": 1,
+        "max": 15,
+        "step": 1
+      },
+      {
+        "type": "checkbox",
+        "id": "secondary_image",
+        "label": "Show Second Image on hover?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show Vendor Name?",
+        "default": false
+      },       
+      {
+        "type": "checkbox",
+        "id": "prlist_btn_show",
+        "label": "Hide Buttons?",
+        "default": false,
+        "info": "add to cart,wishlist,quickview"
+      },
+      {
+        "type": "checkbox",
+        "id": "btn_mobiles",
+        "label": "Hide Buttons on Mobile?",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Color Swatches"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_color_swatch",
+        "label": "Show ?",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "color_type",
+        "label": "Swatch Type",
+        "default": "color",
+        "info": "Some colors appear white? Add custom colors from 'Custom Colors' section which appear below footer section",
+        "options": [
+          {
+            "value": "color",
+            "label": "Color Swatch"
+          },
+          {
+            "value": "vrimage",
+            "label": "Variant Image"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "v_f_bg_position",
+        "label": "Variant Image Position",
+        "default": "50% 0",
+        "options": [
+          {
+            "value": "50% 0",
+            "label": "Center Top"
+          },
+          {
+            "value": "50% 50%",
+            "label": "Center Center"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "color_size",
+        "label": "Swatch Size",
+        "default": "small",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ]
+      },      
+	 {
+        "type": "header", 
+        "content": "Appearance Tab"
+      },
+	  {
+        "type": "select",
+        "id": "tab-style",
+        "label": "Tab Style",
+        "default": "1",
+		"info":"[tab style](https://www.adornthemes.com/different-tab-styles/)",
+        "options": [
+              {
+                "value": "1",
+                "label": "Simple Text"
+              },
+		      {
+                "value": "2",
+                "label": "Solid"
+              }
+		 ]
+      },
+      {
+        "type": "paragraph",
+        "content": "Tabs ====="
+      },
+      {
+        "type": "range",
+        "id": "fs",
+        "label": "Font Size",
+        "default": 14,
+        "min": 10,
+        "max": 25,
+        "step": 1,
+        "unit": "px"
+      },
+    {
+        "type": "select",
+        "id": "ff",
+        "label": "Font Family",
+        "default": "ft1",
+        "options": [
+            {
+                "value": "ft1",
+                "label": "Font 1"
+            },
+            {
+                "value": "ft2",
+                "label": "Font 2"
+            },
+            {
+                "value": "ft3",
+                "label": "Font 3"
+            }
+        ]
+    },
+    {
+        "type": "select",
+        "id": "fw",
+        "label": "Font Weight",
+        "default": "400",
+        "options": [
+            {
+                "value": "300",
+                "label": "Light"
+            },
+            {
+                "value": "400",
+                "label": "Regular"
+            },
+            {
+                "value": "500",
+                "label": "Medium"
+            },
+            {
+                "value": "600",
+                "label": "Semi Bold"
+            },
+            {
+                "value": "700",
+                "label": "Bold"
+            }
+        ]
+    },
+      {
+        "type": "color",
+        "id": "cl",
+        "label": "Text",
+        "default": "#666"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "bd",
+        "label": "Border",
+        "default": "#eee"
+      },
+      {
+        "type": "range",
+        "id": "bdr",
+        "label": "Border Radius",
+        "default": 7,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "paragraph",
+        "content": "Active Tab ====="
+      },
+      {
+        "type": "color",
+        "id": "cla",
+        "label": "Text",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "bga",
+        "label": "Background",
+        "default": "#fafafa",
+        "info": "Use only for solid style tabs"
+      },
+      {
+        "type": "color",
+        "id": "bda",
+        "label": "Border",
+        "default": "#000"
+      },
+      {
+        "type": "paragraph",
+        "content": "Tabs On Mobile ====="
+      },
+      {
+        "type": "range",
+        "id": "fsm",
+        "label": "Font Size",
+        "default": 85,
+        "min": 0,
+        "max": 500,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "clm",
+        "label": "Text",
+        "default": "#111"
+      },
+      {
+        "type": "color",
+        "id": "bgm",
+        "label": "Background",
+        "default": "#eee"
+      },
+      {
+        "type": "color",
+        "id": "clma",
+        "label": "Active Text",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "bgma",
+        "label": "Active Background",
+        "default": "#111"
+      }	
+	 ],
+	"blocks": [
+      {
+        "type": "cltabs",
+        "name": "Collection",
+        "settings": [
+ 		{
+          "type": "text",
+          "id": "title",
+          "label": "Collection Tab Name",
+          "default": "Tab Name"		  
+        },
+       	 {
+          "id": "collection",
+          "type": "collection",
+          "label": "Select Collection"
+    	  }          
+      	]
+     }
+	],
+    "presets": [
+      {
+        "name": "Tabs + Products Slider",       
+        "blocks": [
+          {
+            "type": "cltabs"
+          },
+          {
+            "type": "cltabs"
+          },
+          {
+            "type": "cltabs"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %} 

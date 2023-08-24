@@ -1,0 +1,20 @@
+<product-recommendations class="complementary-products" data-url="{{ routes.product_recommendations_url }}?section_id={{ sectionId }}&product_id={{ product.id }}&limit={{ block.limit }}&intent=complementary">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <aside aria-label="{{ 'accessibility.complementary_products' | t }}" {{ block.shopify_attributes }} class="mb{{block.bm}}">
+        <p class="ttlTxt mb15" style="--tcl:{{block.cl}};--tfs:{{block.fs}}px;--tfsm:{{block.fsm | divided_by: 100.0 }}rem;--tfw:{{block.fw}}">{{ block.title }}</p>
+        <div class="grid gspace recomPr rwcols-{{block.gridmb}} rwcols-md-{{block.gridtb}} rwcols-lg-{{block.grid}}" role="list"
+             data-flickity='{ "cellAlign":"left","groupCells":true,"wrapAround":true,"pageDots":false{%- if section.settings.autoplay -%},"autoPlay":{{section.settings.speed | times: 1000}}{% endif %}{%- if isRtl -%},"rightToLeft": true{%- endif -%} }'
+             style="--grsp:0 -7px;--grspi:0 7px;--grspm:0 -5px;--grspim:0 5px;">
+            {%- for product in recommendations.products limit: block.settings.products_per_page offset: continue -%}
+                <div class="gitem tc">
+                    <a class="grid_lnk" href="{{ product.url | within: collection }}">
+                        <div class="gitem-img mb15 lazyload{% if secondImg and product.images.size > 1 %} primary{% endif %}" data-bgset="{% render 'prgrid-img', image: product.featured_image, sizes: sizes %}" data-sizes="auto" data-parent-fit="contain"></div>
+                    </a>
+                    <a href="{{ product.url | within: collection }}" class="grid-view-item__title">{{ product.title }}</a>
+                    {% unless settings.catalogmode %}<div class="grid-view-item__meta">{% render 'product-price', product: product %}</div>{% endunless %}
+                </div>
+            {%- endfor -%}
+        </div>
+    </aside>
+    {%- endif -%}
+</product-recommendations>

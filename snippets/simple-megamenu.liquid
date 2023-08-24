@@ -1,0 +1,58 @@
+<ul class="dropdown !py-2 !w-full left-0 border-none shadow-none flex justify-between text-black-900 2k:h-[22rem] h-[17rem] ">
+
+{% assign liClass = "bg-no-repeat w-1/3 mx-1 hover:opacity-90 transition-all bg-cover bg-right hover:bg-left duration-500" %}
+    <li class="{{ liClass }}" {% if blkSet.img_url1 != balnk %}style="background-image: url({{blkSet.img_url1 | image_url: width:master }});"{% endif %}>
+        {% if blkSet.text_link1 == blank and blkSet.url_link1 != blank%}
+        <a class="!bg-transparent h-full" href="{{ blkSet.url_link1 }}">
+        {% endif %}
+        <div class="h-full flex flex-col p-8 pb-0 {% if blkSet.img_url1 == balnk %}lg:pl-16 md:pl-8{% endif %}">
+            <p class="text-base mb-0">{{ blkSet.text_sub1 }}</p>
+            <h1 class="text-2xl font-blod">{{ blkSet.text_main1 }}</h1>
+            {% if blkSet.text_link1 != blank %}
+            <div class="mt-auto"> <a class="text-lg" href="{{ blkSet.url_link1 }}">{{ blkSet.text_link1 }} ></a> </div>
+            {% endif %}
+
+        </div>
+        {% if blkSet.text_link1 == blank and blkSet.url_link1 != blank%}
+        </a>
+        {% endif %}
+    </li>
+
+    <li class="{{ liClass }}" {% if blkSet.img_url2 != balnk %}style="background-image: url({{blkSet.img_url2 | image_url: width:master }});"{% endif %}>
+       
+       {% if blkSet.text_link2 == blank and blkSet.url_link2 != blank%}
+        <a class="!bg-transparent h-full" href="{{ blkSet.url_link2 }}">
+        {% endif %}
+        <div class="h-full flex flex-col p-8 pb-0 {% if blkSet.img_url2 == balnk %}lg:pl-16 md:pl-8{% endif %}">
+            <p class="text-base mb-0">{{ blkSet.text_sub2 }}</p>
+            <h1 class="text-2xl font-blod">{{ blkSet.text_main2 }}</h1>
+            {% if blkSet.text_link2 != blank %}
+            <div class="mt-auto"> <a class="text-lg" href="{{ blkSet.url_link2 }}">{{ blkSet.text_link2 }} ></a> </div>
+            {% endif %}
+
+        </div>
+        {% if blkSet.text_link2 == blank and blkSet.url_link2 != blank%}
+        </a>
+        {% endif %}
+    </li>
+
+    <li class="{{ liClass }}" {% if blkSet.img_url3 != balnk %}style="background-image: url({{blkSet.img_url3 | image_url: width:master }});"{% endif %}>
+        {% if blkSet.text_link3 == blank and blkSet.url_link3 != blank%}
+        <a class="!bg-transparent h-full" href="{{ blkSet.url_link3 }}">
+        {% endif %}
+        <div class="h-full flex flex-col p-8 pb-0 {% if blkSet.img_url3 == balnk %}lg:pl-16 md:pl-8{% endif %}">
+            <p class="text-base mb-0">{{ blkSet.text_sub3 }}</p>
+            <h1 class="text-2xl font-blod">{{ blkSet.text_main3 }}</h1>
+            {% if blkSet.text_link3 != blank %}
+            <div class="mt-auto"> <a class="text-lg" href="{{ blkSet.url_link3 }}">{{ blkSet.text_link3 }} ></a> </div>
+            {% endif %}
+
+        </div>
+        {% if blkSet.text_link3 == blank and blkSet.url_link3 != blank%}
+        </a>
+        {% endif %}
+    </li>
+
+
+</ul>
+

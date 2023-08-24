@@ -1,0 +1,58 @@
+{%  assign collection_image = blkSt.collection_image | default:collection.image %}
+{%- assign aspectratio = blkSt.collection_image.aspect_ratio | default:collection.image.aspect_ratio -%}
+{%- assign img_url = collection_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+{% if blkSt.collection_image != blank %}
+  {%- assign collection_image = blkSt.collection_image -%}
+  {%- assign aspectratio = blkSt.collection_image.aspect_ratio -%}
+{% elsif collection.products.first and collection.products.first.images != empty %}
+  {%- assign collection_image = collection.products.first.featured_image -%}
+  {%- assign aspectratio = collection.products.first.featured_image.aspect_ratio -%}
+{% else %}
+  {% assign collection_image = blank %}
+{% endif %}
+
+{%- assign img_url = collection_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+<div class="cl-item">
+  <a href="{{ blkSt.url | default:collection.url }}" class="cl-item__link">
+    <div class="imgWrap">
+      {%- if collection_image != blank -%}
+        	<img class="imgFl img lazyload w_100 db wow zoomIn" width="{{ collection_image.width }}" height="{{ collection_image.height }}" data-src="{{ img_url }}" data-widths="[160,300,420,560,770,940,1200,1500]" data-aspectratio="{{ collection_image.aspect_ratio }}" data-sizes="auto" alt="{{ collection_image.alt | escape }}" />               
+         {% else %} 
+        	{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}{{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}    
+         {% endif %}
+    </div>
+    {% if masonary %}<div class="fl cldtl_wrap {{ blkSt.text_pos}}">{% endif %}
+     <div class="details{% if secSt.textalign %} {{ secSt.textalign}}{% endif %}{% if secSt.leftpadzero %} pad-0{% endif %} wd90 wd{{ secSt.box-width}}-md {{ blkSt.talign}}{% if secSt.isbox %} bx{% endif %}">
+        <h3 class="clitem-ttl {{secSt.text_size}} {{ secSt.font_weight}}">
+          {% if collection.empty? %}
+            {% if blkSt.collection_name != blank %}
+               {{ blkSt.collection_name }}
+            {% else %}
+           	   {{ 'homepage.onboarding.collection_title' | t }}
+            {% endif %}                  	
+          {% else %}
+            {% if blkSt.collection_name != blank %}
+           	   {{ blkSt.collection_name }}
+            {% else %}
+              {{ collection.title }}
+            {% endif %}                  		
+          {% endif %}
+        </h3>
+        {% if blkSt.collection_name2 != blank %}
+        	<p> {{ blkSt.collection_name2 }} </p>                       
+        {% endif %}   
+
+        {% if secSt.product_count %}
+        	<span class="counts">{{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}</span>
+        {% endif %}                          
+
+        {% if secSt.show_buttons %}
+          {% if  blkSt.collection_btn != blank %} 
+         	 <button class="btn {{secSt.btn-size-mob}} {{secSt.btn-size-desk}} {{secSt.btn-style}}" type="button">{{blkSt.collection_btn}}</button>
+          {% endif %}
+        {% endif %}                              
+    </div>
+    {% if masonary %}</div>{% endif %}
+  </a>
+</div>

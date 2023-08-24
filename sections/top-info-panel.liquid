@@ -1,0 +1,189 @@
+{%- assign secSt = section.settings -%}
+{%- capture topInfoBar -%}
+<style>
+    {%- if settings.classic_header %}
+        .template-index #shopify-section-top-information-bar {display:none;}
+    {%- endif -%}
+    .top-bar { background:{{section.settings.info_bg}}; min-height:{{section.settings.min_h}}px; }
+    .top-bar img { display:inline-block; vertical-align:text-bottom; margin-right:8px; }
+    .top-bar, .top-bar a { color:{{ section.settings.text_clr}}; font-size:{{section.settings.info_font}}px; }
+
+    {% if section.settings.m_text %}
+        .marquee-text { box-sizing:border-box; align-items:center; overflow:hidden; }
+        .top-bar a {white-space:nowrap;}
+        .top-info-bar { width:200%; animation: marquee {{section.settings.m_speed}}s linear infinite running;} 
+        .top-info-bar:hover { -webkit-animation-play-state: paused;  -moz-animation-play-state: paused;  -o-animation-play-state: paused;  -ms-animation-play-state: paused; animation-play-state: paused;}
+        .top-info-bar .fl1 { padding-left:30px; padding-right:30px; display:inline-flex;align-items:center;justify-content:center; white-space:nowrap; }
+        
+        @-moz-keyframes marquee{0%{-webkit-transform:translateX(0);-moz-transform:translateX(0);-o-transform:translateX(0);-ms-transform:translateX(0);transform:translateX(0)}100%{-webkit-transform:translate(-50%);-moz-transform:translate(-50%);-o-transform:translate(-50%);-ms-transform:translate(-50%);transform:translate(-50%)}}@-webkit-keyframes marquee{0%{-webkit-transform:translateX(0);-moz-transform:translateX(0);-o-transform:translateX(0);-ms-transform:translateX(0);transform:translateX(0)}100%{-webkit-transform:translate(-50%);-moz-transform:translate(-50%);-o-transform:translate(-50%);-ms-transform:translate(-50%);transform:translate(-50%)}}@-o-keyframes marquee{0%{-webkit-transform:translateX(0);-moz-transform:translateX(0);-o-transform:translateX(0);-ms-transform:translateX(0);transform:translateX(0)}100%{-webkit-transform:translate(-50%);-moz-transform:translate(-50%);-o-transform:translate(-50%);-ms-transform:translate(-50%);transform:translate(-50%)}}@keyframes marquee{0%{-webkit-transform:translateX(0);-moz-transform:translateX(0);-o-transform:translateX(0);-ms-transform:translateX(0);transform:translateX(0)}100%{-webkit-transform:translate(-50%);-moz-transform:translate(-50%);-o-transform:translate(-50%);-ms-transform:translate(-50%);transform:translate(-50%)}}
+
+        @media only screen and (max-width:766px){
+            .top-info-bar { -webkit-animation: marquee {{section.settings.m_speedm}}s linear infinite running; -moz-animation: marquee {{section.settings.m_speedm}}s linear infinite running; -o-animation: marquee {{section.settings.m_speedm}}s linear infinite running; -ms-animation: marquee {{section.settings.m_speedm}}s linear infinite running; animation: marquee {{section.settings.m_speedm}}s linear infinite running;} 
+        }
+    {%- endif -%}
+</style>
+<div class="top-bar fl f-aic {% if section.settings.topbarmobile %}hide-sm{% endif %}">
+    <div class="page-width wd100{% if section.settings.fullwidth %} fullwidth{% endif %}" id="carousel-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="carousel">        
+        {% if section.settings.m_text %}<div class="marquee-text">{% endif %}
+            <div class="{% if section.settings.m_text %}fl mrq{% else %}grid rwcols-md-{{secSt.grid}}{% endif %} tc top-info-bar{% unless section.settings.m_text %} carousel{% endunless %}" 
+                {% unless section.settings.m_text %}data-flickity='{ "cellAlign":"left","groupCells":true,"wrapAround":true,"prevNextButtons":false,"pageDots":false,"autoPlay":5000{%- if settings.rtl -%},"rightToLeft": true{%- endif -%} }'{% endunless %}>
+
+                {% for block in section.blocks limit: section.blocks.size %}
+                    {%- assign blkSt = block.settings -%}
+                    {% if blkSt.title %}
+                        <div class="{% unless section.settings.m_text %}gitem{% endunless %} fl1 {{ blkSt.align_text}}-md" {{ block.shopify_attributes }}>
+                            <{% if blkSt.url == blank %}span{% else %}a href="{{ blkSt.url}}"{% endif %}>{% if blkSt.image %}<img src="{{blkSt.image | img_url: '50x' }}" alt="" /> {% endif %}{{ blkSt.title}}</{% if blkSt.url == blank %}span{% else %}a{% endif %}>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if section.settings.m_text %}
+                    {% for block in section.blocks limit: section.blocks.size %}
+                        {%- assign blkSt = block.settings -%}
+                        {% if blkSt.title %}
+                            <div class="fl1 {{ blkSt.align_text}}-md" {{ block.shopify_attributes }}>
+                                <{% if blkSt.url == blank %}span{% else %}a href="{{ blkSt.url}}"{% endif %}>{% if blkSt.image %}<img src="{{blkSt.image | img_url: '50x' }}" alt="" /> {% endif %}{{ blkSt.title}}</{% if blkSt.url == blank %}span{% else %}a{% endif %}>
+                            </div>
+                        {% endif %}
+                    {% endfor %} 
+
+                    {% for block in section.blocks limit: section.blocks.size %}
+                        {%- assign blkSt = block.settings -%}
+                        {% if blkSt.title %}
+                            <div class="fl1 {{ blkSt.align_text}}-md" {{ block.shopify_attributes }}>
+                                <{% if blkSt.url == blank %}span{% else %}a href="{{ blkSt.url}}"{% endif %}>{% if blkSt.image %}<img src="{{blkSt.image | img_url: '50x' }}" alt="" /> {% endif %}{{ blkSt.title}}</{% if blkSt.url == blank %}span{% else %}a{% endif %}>
+                            </div>
+                        {% endif %}
+                    {% endfor %}        
+                {% endif %}
+            </div>
+        {% if section.settings.m_text %} </div>{% endif %}
+    </div>
+</div>
+{%- endcapture -%}
+{{ topInfoBar | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Top Information Bar",
+    "class": "index-section",   
+    "max_blocks": 4,
+    "settings":[				
+        {
+            "type": "checkbox",
+            "id": "fullwidth",
+            "label": "Fullwidth?",
+            "default": false
+        },
+        { 
+            "type":"checkbox",
+            "id":"topbarmobile",
+            "label":"Hide in Mobile?",
+            "default":true,
+            "info":"Hide this option for mobile view"
+        },
+        {
+            "type": "color",
+            "id": "info_bg",
+            "label": "Background",
+            "default": "#111"
+        },
+        {
+            "type": "color",
+            "id": "text_clr",
+            "label": "Text",
+            "default": "#fff"
+        },
+        {
+            "type": "range",
+            "id": "grid",
+            "label": "Number Of Column to display",
+            "default": 3,
+            "min": 1,
+            "max": 3,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "info_font",
+            "label": "Font Size",
+            "default": 12,
+            "min": 10,
+            "max": 16,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "min_h",
+            "label": "Min. height",
+            "default": 30,
+            "min": 25,
+            "max": 50,
+            "step": 1
+        },		
+        {
+            "type": "checkbox",
+            "id": "m_text",
+            "label": "Enable marquee text",		
+            "default": false,
+            "info":"We have used pure css for this effect so there will be little jerk once text line start to repeat in loop. hover effect will not work on touch device"
+        },
+        {
+            "type": "range",
+            "id": "m_speed",
+            "label": "Text scrolling speed",
+            "default": 12,
+            "min": 5,
+            "max": 20,
+            "step": 1,
+            "info":"Recommended speed 12"
+        },
+        {
+            "type": "range",
+            "id": "m_speedm",
+            "label": "Text scrolling speed(mobile)",
+            "default": 5,
+            "min": 5,
+            "max": 10,
+            "step": 1,
+            "info":"Recommended speed 5"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "text_block",
+            "name": "Column",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Upload Image"
+                },
+                {
+                    "type": "textarea",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "This is your text line",
+                    "info":"use <strong> for bold text, [Find icons here](http:\/\/www.adornthemes.com\/optimal-icons\/)"
+                },
+                {
+                    "type": "select",
+                    "id": "align_text",
+                    "label": "Horizontal alignment",
+                    "default": "tc",
+                    "options": [
+                        {"value": "tl", "label": "Left"},
+                        {"value": "tc", "label": "Centered"},
+                        {"value": "tr", "label": "Right"}
+                    ]
+                },
+                {
+                    "type": "url",
+                    "id": "url",
+                    "label": "URL"
+                }
+            ]
+        }
+    ]    
+}
+{% endschema %}

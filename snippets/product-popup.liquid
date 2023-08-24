@@ -1,0 +1,117 @@
+{% capture productPopup %}
+<!-- product navigation -->
+{% if settings.spr_navigation %}
+  {% if collection.previous_product or collection.next_product %}
+    {% if collection.previous_product %}
+    <a href="{{ collection.previous_product }}" class="sprnav prev{% if settings.spr_navigation_mb %} hide-sm hide-md{% endif %}" title="{{ 'products.product.prev' | t }}">
+      <span class="details">{{ collection.previous_product.title | truncate: 30 }}<br /><span class="nav-price">{{ collection.previous_product.price |money }}</span></span>
+      <span class="img"><img class="imgFl lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ collection.previous_product.images[0].src | img_url:'80x' }}" width="60" height="60" alt="" /></span>
+    </a>
+    {% endif %}
+    {% if collection.next_product %}
+    <a href="{{ collection.next_product }}" class="sprnav next{% if settings.spr_navigation_mb %} hide-sm hide-md{% endif %}" title="{{ 'products.product.next' | t }}">
+      <span class="img"><img class="imgFl lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ collection.next_product.images[0].src | img_url: '80x' }}" width="60" height="60" alt="" /></span>
+      <span class="details">{{ collection.next_product.title | truncate: 30 }}<br /><span class="nav-price">{{ collection.next_product.price |money }}</span></span>
+    </a>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{%- if settings.sticky_cart -%}
+<div class="stickyCart">
+    <div class="fl f-aic f-jcc">
+            <div class="img hide-sm hide-md"><img class="db stickCtImg lazyload" data-src="{{ featured_img_src | img_url: '50x' }}" width="50" height="{{ 50 | divided_by: featured_img_src.aspect_ratio | floor}}" alt="{{ image.alt | escape }}"></div>
+            <p class="sticky-title mb0 hide-sm hide-md">{{ product.title }}</p>
+            {% if product.available and product.variants.size > 0 and product.variants[0].title != 'Default Title'  %}
+                <div class="stickyOpt mr10 pr">         
+                    <div class="selectedOpt">{{ current_variant.title }} - {{ current_variant.price | money }}</div>
+                    <ul>
+                        {%- for variant in product.variants -%}
+                            {%- assign vrNo = forloop.index0 -%}
+                            {%- if variant.available -%}
+                                <li class="vrOpt" data-val="{{ variant.id }}" data-no="{{vrNo}}">{{ variant.title }} - {{ variant.price | money }}</li>
+                            {%- else -%}
+                                <li class="soldout">{{ variant.title }}</li>
+                            {%- endif -%}
+                        {%- endfor -%}
+                    </ul>
+                </div>
+            {% endif %}
+    <div class="wrapQtyBtn mr10 hide-sm hide-md" title="{{ 'products.product.quantity' | t }}">
+        <label class="lblqty v-hidden" for="quantity1">{{ 'products.product.quantity' | t }}</label>
+        <div class="qtyField stickyQty">
+            <button type="button" class="qtyBtn minus" name="minus"><i class="at at-minus-r" aria-hidden="true"></i><span class="v-hidden">{{- 'products.quantity.decrease' | t: product: product.title | escape -}}</span></button>
+            <input type="text" id="quantity1" name="quantity" value="1" class="pr_input qty" />
+            <button type="button" class="qtyBtn plus" name="plus"><i class="at at-plus-r" aria-hidden="true"></i><span class="v-hidden">{{- 'products.quantity.increase' | t: product: product.title | escape -}}</span></button>
+        </div>
+    </div>
+    <button type="submit" name="add" form="{{product_form_id}}" id="AddToCart-{{ section.id }}1" {% unless current_variant.available %}disabled="disabled"{% endunless %} class="btn stAddtocart_js"><span id="AddToCartText-{{ section.id }}">{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}</span></button>
+    </div>
+</div>
+{%- endif -%}
+
+{%- if settings.enable_lightbox -%}
+<link rel="preload" as="style" href="{{ 'photoswipe.css' | asset_url }}" onload="this.rel='stylesheet'">
+<script type="module">
+    import PhotoSwipeLightbox from '{{'photoswipe-lightbox.min.js' | asset_url}}';
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '.primgSlider',
+        children: '.pswipe',
+        pswpModule: () => import('{{'photoswipe.min.js' | asset_url}}')
+    });
+    lightbox.init();
+</script>
+{%- endif -%}
+
+{%- if settings.askaboutproduct %}
+	<div id="productInquiry" class="mfpbox mfp-hide mfp-with-anim">
+      	<div class="form-vertical">
+          <h3>{{ product.title }}</h3>
+          {% form 'contact' %}
+              {% if form.posted_successfully? %}<p class="note form-success"> {{ 'products.enquiry.post_success' | t }} </p>{% endif %}
+              {{ form.errors | default_errors }}
+              <div class="formFeilds">
+                  <input type="hidden"  name="contact[product name]" value="{{ product.title }}">
+                  <input type="hidden"  name="contact[product link]" value="{{ shop.url }}{{ product.url }}">
+                  <input type="text" id="ContactFormName" name="contact[name]" placeholder="{{ 'products.enquiry.name' | t }}"  value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}" required>
+                  <div class="grid grid--half-gutters">
+                      <div class="gitem medium-up--one-half">
+                          <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'products.enquiry.email' | t }}"  autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required>
+                      </div>
+                      <div class="gitem medium-up--one-half">
+                          <input type="tel" id="ContactFormPhone" name="contact[phone]" pattern="[0-9\-]*" placeholder="{{ 'products.enquiry.phone' | t }}"  value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                      </div>
+                  </div>
+                  <textarea required rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'products.enquiry.message' | t }}" >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+                  <input type="hidden" name="challenge" value="false">
+                  <input type="submit" class="btn" value="{{ 'products.enquiry.submit' | t }}">
+              </div>
+          {% endform %}
+      </div>
+	</div>
+{%- endif -%}
+{%- if settings.shippingpopup %}<div id="ShippingInfo" class="rte mfpbox mfp-hide mfp-with-anim">{{ pages[settings.shippingpage].content }}</div> {%- endif -%}
+{% endcapture %}
+{{productPopup | strip_newlines | remove: "  " | remove: "	" }}
+<script type="text/javascript">
+window.addEventListener('load', function() {
+    $(document).ready(function(){
+      {%- if settings.askaboutproduct %}
+        if(location.search.indexOf('contact_posted=true') == 1){
+              //alert("yes");
+              $("#productInquiry .formFeilds").hide();
+              $.magnificPopup.open({
+                items: {
+                  src: '#productInquiry'
+                },
+                type: 'inline'
+              });
+        }
+      {%- endif -%}
+
+      {%- if product.metafields.my_fields.video != blank -%}
+          $('.popup-video').magnificPopup({ type: 'iframe', mainClass: 'mfp-zoom-in', removalDelay: 160, preloader: false, fixedContentPos: false });
+      {%- endif -%}
+    });
+});
+</script>

@@ -1,0 +1,167 @@
+/* 动态生成的类名 */
+.flickity-button{@apply opacity-100}
+
+[section-name = 'products-slider-full'] .flickity-slider .is-selected{@apply opacity-100}
+[section-name = 'products-slider-full'] .flickity-slider .is-selected [tag-name = 'product-info']{@apply opacity-100}
+[section-name = 'products-slider-full'] .flickity-slider .is-selected [tag-name = 'product-img']{@apply scale-100}
+
+[section-name = 'logo-slider'] .flickity-slider .is-selected img{@apply grayscale-0 scale-100}
+[section-name = 'logo-slider'] .flickity-enabled.is-fade .flickity-slider>*{@apply duration-150 ease-linear}
+[section-name = 'logo-slider'] .flickity-page-dots .dot{@apply rounded-none w-4 h-1 pointer-events-none}
+[section-name = 'logo-slider'] .flickity-page-dots .dot.is-selected{@apply w-5}
+
+[section-name = 'store-features'] [tag-name = 'features-header'] .h3{@apply md:text-4_5xl text-2_5xl md:mb-7 mb-5}
+[section-name = 'store-features'] [tag-name = 'features-header'] p{@apply md:text-xl px-4}
+[section-name = 'store-features'] [tag-name = 'features-ul'] .flickity-page-dots {@apply absolute -bottom-8 w-full}
+[section-name = 'store-features'] [tag-name = 'features-ul'] .flickity-page-dots .dot{@apply h-1 w-6 rounded-none mx-1 p-0 bg-black-600}
+[section-name = 'store-features'] [tag-name = 'features-ul'] .flickity-page-dots .dot.is-selected{@apply bg-white}
+
+#header{@apply transition-colors duration-500}
+
+body.template-index .stickyHeader [tag-name = 'reversal-logo']{@apply !block}
+body.template-index .stickyHeader [tag-name = 'logo']{@apply !hidden}
+body.template-index #header:not(.stickyHeader) [tag-name = 'logo']{@apply block}
+body.template-index #header:not(.stickyHeader) [tag-name = 'reversal-logo']{@apply !hidden}
+body:not(.template-index) [tag-name = 'logo']{@apply !hidden}
+
+body.template-product #header:not(.stickyHeader) [tag-name = 'reversal-logo']{@apply !block}
+body.template-product #header:not(.stickyHeader) [tag-name = 'logo']{@apply !hidden}
+
+.template-index #header.stickyHeader [section-name = 'localization'] select{@apply text-black-900}
+.template-index #header [section-name = 'localization'] select{@apply text-white}
+.footer-bottom [section-name = 'localization'] select{@apply text-white}
+
+[section-name = 'color-slider-full'] div.is-selected [tag-name = 'color-block'] > div{@apply shadow-black-600}
+[section-name = 'color-slider-full'] div.is-selected [tag-name = 'color-block']{@apply border-black-800 }
+
+[section-name = 'multiple-image-text'] .flickity-button{@apply bg-black-700 hover:bg-black-900 lg:flex hidden}
+[section-name = 'multiple-image-text'] .flickity-button-icon{@apply fill-white}
+[section-name = 'multiple-image-text'] .flickity-prev-next-button.previous{@apply xl:-left-14}
+[section-name = 'multiple-image-text'] .flickity-prev-next-button.next{@apply xl:-right-14}
+
+[section-name = 'products-slider-full'] .flickity-button{@apply bg-black-700 hover:bg-black-900}
+[section-name = 'products-slider-full'] .flickity-button-icon{@apply fill-white}
+[section-name = 'products-slider-full'] .flickity-prev-next-button.previous{@apply xl:left-1/5 left-8}
+[section-name = 'products-slider-full'] .flickity-prev-next-button.next{@apply xl:right-1/5 right-8}
+
+[section-name = 'product-tabs-nav'] [tag-name = 'tabs-wrapper'] >a.active{@apply text-white border-solid border-0 md:border-b-4 border-white}
+
+[tag-name = 'simple-menu-item'] ul.dropdown li{@apply !border-t-0}
+
+.pswp--click-to-zoom.pswp--zoom-allowed .pswp__img{@apply bg-white}
+.zoomImg{@apply !bg-white}
+
+.slideshow-wrapper .hbStyle .flickity-page-dots{@apply md:pl-8 pl-0 max-w-page md:left-1/2 md:-translate-x-1/2 md:justify-start justify-center lg:bottom-12 md:bottom-8 bottom-6 }
+.slideshow-wrapper .hbStyle .flickity-page-dots .dot{@apply bg-white rounded-none md:w-2 md:h-2 h-1 w-4 transition-all}
+.slideshow-wrapper .hbStyle .flickity-page-dots .dot.is-selected{@apply bg-vi md:w-8 w-12}
+
+.video-wrap__grippy + .video-wrap__grippy { @apply left-auto right-0 before:left-auto before:right-full before:top-auto before:bottom-0; }
+
+[section-name = 'accordion'] .at-plus-r{@apply bg-black-400}
+.product-single .flickity-button{@apply pad:flex hidden }
+.pr_thumbs_item {@apply pad:w-[14.5%] pad:mx-[.85%] md:w-[18.5%] md:mx-[0.3%] mx-1 w-[5.65rem]}
+#siteNav ul.dropdown li a{@apply bg-transparent}
+
+@media only screen and (max-width:769px) {
+    [flickity-screen='pc']:after {@apply content-none }
+    [flickity-screen='mobile']:after {@apply content-['flickity'] hidden }
+    .notification-bar__message,
+    #newsletter-modal .checkboxlink,
+    .btn-filter,
+    #newsletter-modal p.sub-text{@apply !text-xs}
+    #MobileNav li a .at,
+    .grid-view-item .pr_price,
+    .list-view_title-column .pr_price,
+    .btn.btn-md,
+    .grid-view-item__title{@apply !text-sm}
+    .footer-top a{@apply !text-[.925rem]}
+    #MobileNav li a,
+    .closemmn .at,
+    .site-footer,
+    .footer-top .newsletter .btn,
+    .list-view-item__title,
+    input, textarea, select{@apply !text-base}
+    #newsletter-modal h2,
+    .footer-links .h4:before,
+    h3,
+    .shopify-policy__title h1, .page-title,
+    #newsletter-modal .mfp-close{@apply !text-lg}
+    .site-header{@apply h-[4.65rem]}
+    .site-header a.hdicon .at{@apply text-2xl leading-none}
+    [tag-name = 'logo'],[tag-name = 'reversal-logo']{@apply !w-38 !h-auto !max-w-none}
+    .mobile-nav-wrapper{@apply w-60}
+    #MobileNav li a{@apply py-3}
+    .closemmn{@apply -right-10 w-10 h-10}
+    [section-name = 'products-slider-full']{@apply !bg-none}
+    #newsletter-modal,
+    #newsletter-modal .wraptext{@apply !max-w-sm}
+    #newsletter-modal .wraptext{@apply px-4}
+    [type='checkbox']{@apply w-3 h-3}
+    #newsletter-modal h2{@apply !mb-3}
+    #newsletter-modal p.sub-text{@apply !mb-6}
+    .footer-bottom .payment-list__item{@apply !h-auto w-8 mr-2}
+    .footer-links .h4.active{@apply text-white font-bold}
+    .footer-top .newsletter .wrap-newsletter{@apply max-w-none}
+    #shopify-section-footer [section-name = 'localization'] img,
+    .gridSwatches li{@apply w-5 h-5}
+    #shopify-section-footer [section-name = 'localization'] select{@apply text-black-400}
+    #CartCount, .favCount{@apply h-4 min-w-[1rem] text-base leading-none -top-1}
+}
+
+@media only screen and (min-width:765px) {
+    [flickity-screen='pc']:after {@apply content-['flickity'] hidden}
+    [flickity-screen='mobile']:after {@apply content-none}
+}
+
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root{
+        --ft1:'Product Sans';
+        --ft2:'Product Sans';
+        --ft3:'Product Sans';
+    }
+    @media only screen and (max-width:750px){
+        :root{
+            --fs:'28px';
+            --fsm:'24px';
+            --qfsm:'.75rem'
+        }
+    }
+}
+
+@layer utilities{
+    .shopify-section .grid:not(.flickity-enabled){@apply flex}
+    .shopify-section .grid.flickity-enabled{@apply block}
+    [aria-labelledby = 'pi-unionpay']{@apply hidden}
+
+
+    @media only screen and (max-width:750px){
+        html,body { font-size:28px }
+    }
+}
+
+@layer components {
+
+    .site-header,#siteNav>li.ctsize, #siteNav>li.dropdown{@apply static}
+
+    .social-icons .social-icons__link{@apply text-black-400}
+    .social-icons .social-icons__link span{@apply hidden}
+    .social-icons .social-icons__link i{@apply md:text-xl text-1_5xl md:mr-0 mr-4}
+    .social-icons .icon{@apply md:w-5 md:h-5 w-6 h-6 md:mr-0 mr-4}
+
+    #siteNav ul.dropdown li a:hover{@apply !bg-transparent}
+    .btn-featured{@apply font-normal rounded-full bg-gradient-to-b from-vi-light to-vi-dark border-none  hover:text-white hover:-translate-y-1 hover:scale-95}
+    .btn-contrast{@apply font-normal rounded-full bg-white text-black-900 border-white hover:text-white hover:bg-black-900 hover:border-white }
+    .btn-vi{@apply font-normal rounded-full !bg-vi !border-vi hover:!text-vi hover:!bg-white hover:!border-vi }
+    .template-index #header:not(.stickyHeader){@apply text-white bg-transparent absolute w-full border-none}
+    .template-index #header:not(.stickyHeader) #siteNav>li>a,.template-index #header:not(.stickyHeader) .site-header a.hdicon{@apply text-white}
+
+    .enlarge {@apply md:hover:scale-105 transition-transform duration-500}
+
+}

@@ -1,0 +1,16 @@
+
+
+{% if settings.current_flag != blank and settings.region_menu != blank %}
+<section section-name="localization" class="mr-4 flex">
+  <div class="flex items-center">
+    {{ settings.current_flag | image_url: width: 100 | image_tag: loading: 'lazy', class: "h-auto w-5" }}
+  </div>
+    <select value=" " onchange="location.href=this.options[this.selectedIndex].value;"
+    class="m-0 !bg-transparent border-none p-0 pl-2 text-base pr-6 bg-none transition-colors duration-500">
+      {% for link in linklists[settings.region_menu].links %}
+      <option value= "{{ link.url }} "> {{ link.title | split: '[' | first }} </option>
+      {% endfor %}
+    </select>
+</section>
+
+{% endif %}

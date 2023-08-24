@@ -1,0 +1,193 @@
+{%- liquid
+    assign isRtl = false
+    assign lisRtl = 'ar,dv,ha,he,ku,fa,ur,ug' | split: ','
+    if lisRtl contains request.locale.iso_code or settings.rtl
+        assign isRtl = true
+    endif
+   assign secSt = section.settings
+-%}
+{%- capture logobar -%}
+<div class="content-indent {{ secSt.top-offeset}}">
+ {% if secSt.section_cov %} <div class="section-cover" style="background-color:{{secSt.sec_bg_clr}};"> {% endif%}
+  <div class="logo-bar page-width wow fadeIn" id="carousel-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="carousel">
+
+    {% render 'sec-title' %}
+
+    {% if section.blocks.size > 0 %}
+    <div class="grid rwcols-{{secSt.mobile-grid}} rwcols-md-{{secSt.tablet-grid}} rwcols-lg-{{secSt.grid}} {{secSt.logostyle}} f-jcc arwOut" {% if secSt.logostyle == 'carousel' %} data-flickity='{ "cellAlign":"left","groupCells":true,"wrapAround":true,"pageDots":false{%- if secSt.autoplay -%},"autoPlay":{{secSt.speed | times: 1000}}{% endif %}{%- if isRtl -%},"rightToLeft": true{%- endif -%} }'{% endif %}>
+      {% for block in section.blocks %}
+      {%- assign blkSt = block.settings -%}
+      <div class="gitem" id="{{block.id}}" {{ block.shopify_attributes }}>
+        {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" class="logo-bar__link" {% if block.settings.opentab %} target="_blank"{% endif %}>{% endif %}
+          {% if block.settings.image != blank %}
+            {%- assign image = blkSt.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+            <img class="logoImg db autoHt lazyload" width="{{blkSt.image.width}}" height="{{blkSt.image.height}}"
+                 data-src="{{ image }}" data-widths="[100,200,300]" data-sizes="auto" alt="{{ blkSt.image.alt | escape }}">
+          {% else %}
+          	{{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        {% if block.settings.link != blank %}</a>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if section.blocks.size == 0 %}{% include 'no-blocks' %}{% endif %}
+  </div>
+ {% if secSt.section_cov %} </div> {% endif%}
+</div>  
+{%- endcapture -%}
+{{logobar | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Logo List",
+    "class": "index-section",
+    "max_blocks": 20,
+    "settings": [	
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Logo list"	
+      },
+ 	  {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Describe your products, collection, content etc..."
+      },
+        {
+            "type": "select",
+            "id": "top-offeset",
+            "label": "Top OffSet",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+			  {
+                "value": "none",
+                "label": "None"
+              }
+			]
+       }, 
+		{
+            "type": "checkbox",
+            "id": "section_cov",
+            "label": "Add Background?",
+            "default": false
+        },
+		 {
+            "type": "color",
+            "id": "sec_bg_clr",
+            "label": "Background",
+			"default":"#fafafa"	
+		 },
+	 {
+            "type": "select",
+            "id": "logostyle",
+            "label": "Display Logo As",
+            "default": "carousel",
+            "options": [
+              {
+                "value": "carousel",
+                "label": "Carousel"
+              },
+              {
+                "value": "logolist",
+                "label": "List"
+              }			  
+			]
+       }, 
+      {
+        "type": "paragraph",
+        "content": "Logos per row ==="
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Desktop",
+        "default": 6,
+        "min": 1,
+        "max": 8,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "tablet-grid",
+        "label": "Tablet",
+        "default": 5,
+        "min": 1,
+        "max": 6,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "mobile-grid",
+        "label": "Mobile",
+        "default": 3,
+        "min": 1,
+        "max": 4,
+        "step": 1
+      },
+ 	  {
+        "type": "paragraph",
+        "content": "Upload all logo of same size"        
+      }
+    ],
+    "blocks": [
+      {
+        "type": "logo_image",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link",
+            "info": "Optional"
+          },
+		  {
+            "type": "checkbox",
+            "id": "opentab",
+            "label": "Open in new tab?",
+            "default":false
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Logo List",        
+        "blocks": [
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+ 		 {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
